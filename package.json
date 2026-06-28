@@ -1,14 +1,13 @@
 {
   "name": "kelvor-os",
-  "version": "0.51.0-beta",
-  "description": "KelvorOS - Project Aegis stream protection layer",
+  "version": "0.60.0-alpha",
+  "description": "KelvorOS - Project Forge asset vault",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron ."
   },
   "dependencies": {
-    "electron": "^31.0.0",
-    "obs-websocket-js": "^5.0.6"
+    "electron": "^31.0.0"
   }
 }

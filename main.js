@@ -1,18 +1,21 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const OBSWebSocket = require('obs-websocket-js').default;
+const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron');
+const path = require('path');
+const fs = require('fs');
 
 let mainWindow;
-let obs = null;
-let obsConnected = false;
+
+const imageExt = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'];
+const videoExt = ['.mp4', '.webm', '.mov'];
+const audioExt = ['.mp3', '.wav', '.ogg'];
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 990,
+    width: 1580,
+    height: 980,
     minWidth: 1280,
     minHeight: 820,
     backgroundColor: '#030303',
-    title: 'KelvorOS v0.51 Beta - Project Aegis',
+    title: 'KelvorOS v0.60 Alpha - Project Forge',
     webPreferences: {
       preload: __dirname + '/src/core/preload.js',
       nodeIntegration: false,
@@ -23,131 +26,112 @@ function createWindow() {
   mainWindow.loadFile('src/ui/index.html');
 }
 
-async function safeCall(requestType, requestData = {}) {
-  if (!obsConnected || !obs) throw new Error('OBS is not connected.');
-  return await obs.call(requestType, requestData);
+function getVaultPath() {
+  return path.join(__dirname, 'vault');
 }
 
-async function getOBSStatus() {
-  if (!obsConnected || !obs) {
-    return {
-      connected: false,
-      currentScene: 'Unavailable',
-      streaming: false,
-      recording: false,
-      obsVersion: 'Unavailable',
-      scenes: [],
-      streamTimecode: '00:00:00',
-      recordTimecode: '00:00:00',
-      outputSkippedFrames: 0,
-      outputTotalFrames: 0,
-      fps: 'Unavailable',
-      cpuUsage: 'Unavailable',
-      memoryUsage: 'Unavailable',
-      renderSkippedFrames: 0,
-      renderTotalFrames: 0
-    };
-  }
+function ensureVault() {
+  const vault = getVaultPath();
+  const folders = ['Overlays', 'Alerts', 'Logos', 'Transitions', 'Tournament', 'Social', 'Wallpapers', 'Favorites'];
+  if (!fs.existsSync(vault)) fs.mkdirSync(vault);
+  folders.forEach(folder => {
+    const folderPath = path.join(vault, folder);
+    if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
+  });
+  return vault;
+}
 
-  const [scene, stream, record, version, sceneList, stats] = await Promise.all([
-    obs.call('GetCurrentProgramScene'),
-    obs.call('GetStreamStatus'),
-    obs.call('GetRecordStatus'),
-    obs.call('GetVersion'),
-    obs.call('GetSceneList'),
-    obs.call('GetStats')
-  ]);
+function fileType(ext) {
+  if (imageExt.includes(ext)) return 'image';
+  if (videoExt.includes(ext)) return 'video';
+  if (audioExt.includes(ext)) return 'audio';
+  return 'file';
+}
+
+function scanFolder(folderPath, category) {
+  if (!fs.existsSync(folderPath)) return [];
+  const entries = fs.readdirSync(folderPath, { withFileTypes: true });
+  return entries
+    .filter(e => e.isFile())
+    .map(e => {
+      const full = path.join(folderPath, e.name);
+      const stat = fs.statSync(full);
+      const ext = path.extname(e.name).toLowerCase();
+      return {
+        id: Buffer.from(full).toString('base64'),
+        name: e.name,
+        category,
+        path: full,
+        type: fileType(ext),
+        ext,
+        size: stat.size,
+        modified: stat.mtime.toISOString(),
+        previewUrl: `file://${full.replace(/\\/g, '/')}`
+      };
+    });
+}
+
+function scanVault() {
+  const vault = ensureVault();
+  const categories = fs.readdirSync(vault, { withFileTypes: true })
+    .filter(e => e.isDirectory())
+    .map(e => e.name);
+
+  let assets = [];
+  categories.forEach(category => {
+    assets = assets.concat(scanFolder(path.join(vault, category), category));
+  });
 
   return {
-    connected: true,
-    currentScene: scene.currentProgramSceneName,
-    streaming: stream.outputActive,
-    recording: record.outputActive,
-    obsVersion: version.obsVersion || 'Connected',
-    scenes: (sceneList.scenes || []).map(s => s.sceneName).reverse(),
-    streamTimecode: stream.outputTimecode || '00:00:00',
-    recordTimecode: record.outputTimecode || '00:00:00',
-    outputSkippedFrames: stream.outputSkippedFrames || 0,
-    outputTotalFrames: stream.outputTotalFrames || 0,
-    fps: stats.activeFps ? Number(stats.activeFps).toFixed(1) : 'Unavailable',
-    cpuUsage: stats.cpuUsage ? Number(stats.cpuUsage).toFixed(1) + '%' : 'Unavailable',
-    memoryUsage: stats.memoryUsage ? Number(stats.memoryUsage).toFixed(1) + ' MB' : 'Unavailable',
-    renderSkippedFrames: stats.renderSkippedFrames || 0,
-    renderTotalFrames: stats.renderTotalFrames || 0
+    vaultPath: vault,
+    categories,
+    assets
   };
 }
 
-ipcMain.handle('obs-connect', async (_event, config) => {
-  try {
-    obs = new OBSWebSocket();
-    const address = `ws://${config.host || '127.0.0.1'}:${config.port || '4455'}`;
-    await obs.connect(address, config.password || '');
-    obsConnected = true;
+ipcMain.handle('forge-scan', async () => scanVault());
 
-    obs.on('ConnectionClosed', () => {
-      obsConnected = false;
-      mainWindow?.webContents.send('obs-event', { type: 'OBS_DISCONNECTED' });
-    });
+ipcMain.handle('forge-open-vault', async () => {
+  const vault = ensureVault();
+  await shell.openPath(vault);
+  return { ok: true, vaultPath: vault };
+});
 
-    obs.on('CurrentProgramSceneChanged', (data) => {
-      mainWindow?.webContents.send('obs-event', { type: 'OBS_SCENE_CHANGED', sceneName: data.sceneName });
-    });
+ipcMain.handle('forge-open-file-location', async (_event, filePath) => {
+  shell.showItemInFolder(filePath);
+  return { ok: true };
+});
 
-    obs.on('StreamStateChanged', () => mainWindow?.webContents.send('obs-event', { type: 'OBS_STATUS_UPDATED' }));
-    obs.on('RecordStateChanged', () => mainWindow?.webContents.send('obs-event', { type: 'OBS_STATUS_UPDATED' }));
-    obs.on('SceneCreated', () => mainWindow?.webContents.send('obs-event', { type: 'OBS_SCENES_UPDATED' }));
-    obs.on('SceneRemoved', () => mainWindow?.webContents.send('obs-event', { type: 'OBS_SCENES_UPDATED' }));
-    obs.on('SceneNameChanged', () => mainWindow?.webContents.send('obs-event', { type: 'OBS_SCENES_UPDATED' }));
+ipcMain.handle('forge-import-files', async (_event, category) => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title: 'Import Assets into Kelvor Forge',
+    properties: ['openFile', 'multiSelections'],
+    filters: [
+      { name: 'Media Assets', extensions: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'mp4', 'webm', 'mov', 'mp3', 'wav', 'ogg'] },
+      { name: 'All Files', extensions: ['*'] }
+    ]
+  });
 
-    return await getOBSStatus();
-  } catch (error) {
-    obsConnected = false;
-    return { connected: false, error: error.message || String(error), scenes: [] };
+  if (result.canceled) return { canceled: true };
+
+  const vault = ensureVault();
+  const target = path.join(vault, category || 'Overlays');
+  if (!fs.existsSync(target)) fs.mkdirSync(target);
+
+  const imported = [];
+  for (const file of result.filePaths) {
+    const dest = path.join(target, path.basename(file));
+    fs.copyFileSync(file, dest);
+    imported.push(dest);
   }
+
+  return { canceled: false, imported, scan: scanVault() };
 });
 
-ipcMain.handle('obs-disconnect', async () => {
-  try { if (obs) await obs.disconnect(); } catch (_) {}
-  obsConnected = false;
-  obs = null;
-  return await getOBSStatus();
+app.whenReady().then(() => {
+  ensureVault();
+  createWindow();
 });
-
-ipcMain.handle('obs-status', async () => {
-  try { return await getOBSStatus(); }
-  catch (error) { return { connected: false, error: error.message || String(error), scenes: [] }; }
-});
-
-ipcMain.handle('obs-set-scene', async (_event, sceneName) => {
-  try {
-    await safeCall('SetCurrentProgramScene', { sceneName });
-    return await getOBSStatus();
-  } catch (error) {
-    return { connected: obsConnected, error: error.message || String(error) };
-  }
-});
-
-ipcMain.handle('obs-start-stream', async () => {
-  try { await safeCall('StartStream'); return await getOBSStatus(); }
-  catch (error) { return { connected: obsConnected, error: error.message || String(error) }; }
-});
-
-ipcMain.handle('obs-stop-stream', async () => {
-  try { await safeCall('StopStream'); return await getOBSStatus(); }
-  catch (error) { return { connected: obsConnected, error: error.message || String(error) }; }
-});
-
-ipcMain.handle('obs-start-record', async () => {
-  try { await safeCall('StartRecord'); return await getOBSStatus(); }
-  catch (error) { return { connected: obsConnected, error: error.message || String(error) }; }
-});
-
-ipcMain.handle('obs-stop-record', async () => {
-  try { await safeCall('StopRecord'); return await getOBSStatus(); }
-  catch (error) { return { connected: obsConnected, error: error.message || String(error) }; }
-});
-
-app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

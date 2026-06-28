@@ -1,13 +1,18 @@
-# KelvorOS v0.51 Beta — Project Aegis
+# KelvorOS v0.60 Alpha — Project Forge
 
-## Phase 3: Ignition
+Project Forge is the Asset Vault for The JD Lounge.
 
-Project Aegis adds stream protection and smart monitoring to KelvorOS.
-
-## Requirements
-- OBS Studio open
-- OBS WebSocket enabled
-- Node.js installed
+## New in v0.60
+- Asset Vault
+- Category browser
+- Import assets
+- Open vault folder
+- Asset preview panel
+- Image, video, and audio preview support
+- Asset details panel
+- Smart Collections concept page
+- Brand DNA page
+- Starter vault folders
 
 ## Run
 ```bash
@@ -15,22 +20,18 @@ npm install
 npm start
 ```
 
-## OBS Settings
-Use:
-- Host: 127.0.0.1
-- Port: 4455
-- Password: your OBS WebSocket password
+## Vault Folders
+Forge creates these folders:
 
-## New in v0.51
-- Aegis protection dashboard
-- Smart warning system
-- OBS FPS monitoring
-- OBS CPU monitoring
-- Dropped frame alerts
-- Render skipped frame alerts
-- Mission checklist
-- Stream timeline
-- Aegis status states: Standby, Protected, Warning, Critical
+- Overlays
+- Alerts
+- Logos
+- Transitions
+- Tournament
+- Social
+- Wallpapers
+- Favorites
 
-## Test Notes
-Start with OBS open but not live. Connect Kelvor, switch scenes, start/stop recording, then review the timeline and warnings.
+## Notes
+Favorites are scaffolded and will become functional in v0.61.
+OBS apply actions are planned for later Forge releases.
