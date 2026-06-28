@@ -1,0 +1,14 @@
+{
+  "name": "kelvor-os",
+  "version": "0.51.0-beta",
+  "description": "KelvorOS - Project Aegis stream protection layer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron ."
+  },
+  "dependencies": {
+    "electron": "^31.0.0",
+    "obs-websocket-js": "^5.0.6"
+  }
+}

@@ -1,61 +1,36 @@
-# KelvorOS
+# KelvorOS v0.51 Beta — Project Aegis
 
-**The Creator Operating System powering The JD Lounge.**
+## Phase 3: Ignition
 
-KelvorOS is a desktop command center built for streamers, creators, and gaming communities. It began as a custom AI command center for **The JD Lounge** and is being developed into a modular creator operating system.
+Project Aegis adds stream protection and smart monitoring to KelvorOS.
 
-## Current Status
+## Requirements
+- OBS Studio open
+- OBS WebSocket enabled
+- Node.js installed
 
-**Version:** v0.50 Beta  
-**Phase:** Phase 3 — Ignition  
-**Current Project:** Project Command
-
-## Core Vision
-
-KelvorOS brings everything into one command center:
-
-- OBS stream control
-- Dynamic scene management
-- Stream health monitoring
-- Discord community tools
-- Tournament management
-- Asset vault
-- AI assistant
-- Voice commands
-- Creator workflow automation
-
-## Development Phases
-
-| Phase | Name | Status |
-|---|---|---|
-| Phase 1 | Foundation | Complete |
-| Phase 2 | Genesis | Complete |
-| Phase 3 | Ignition | In Progress |
-| Phase 4 | Evolution | Planned |
-| Phase 5 | Ascension | Planned |
-| Phase 6 | Singularity | Planned |
-| Phase 7 | Legacy | Planned |
-
-## Current Modules
-
-- **Project Command** — Stream command center
-- **Project Link** — OBS connection bridge
-- **Project Forge** — Asset vault and branding manager
-- **Project Nexus** — Discord and community integrations
-- **Project Atlas** — Tournament management
-- **Project Echo** — Voice command system
-- **Project Codex** — Knowledge base and AI memory
-
-## Setup
-
-KelvorOS currently runs as an Electron desktop application.
-
+## Run
 ```bash
 npm install
 npm start
 ```
 
-## Built For
+## OBS Settings
+Use:
+- Host: 127.0.0.1
+- Port: 4455
+- Password: your OBS WebSocket password
 
-**The JD Lounge**  
-Command. Control. Create.
+## New in v0.51
+- Aegis protection dashboard
+- Smart warning system
+- OBS FPS monitoring
+- OBS CPU monitoring
+- Dropped frame alerts
+- Render skipped frame alerts
+- Mission checklist
+- Stream timeline
+- Aegis status states: Standby, Protected, Warning, Critical
+
+## Test Notes
+Start with OBS open but not live. Connect Kelvor, switch scenes, start/stop recording, then review the timeline and warnings.
