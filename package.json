@@ -1,13 +1,15 @@
 {
   "name": "kelvor-os",
-  "version": "0.60.0-alpha",
-  "description": "KelvorOS - Project Forge asset vault",
+  "version": "0.90.0-alpha",
+  "description": "KelvorOS - Operation Sentinel pre-flight diagnostics",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron ."
   },
   "dependencies": {
-    "electron": "^31.0.0"
+    "electron": "^31.0.0",
+    "obs-websocket-js": "^5.0.6",
+    "discord.js": "^14.15.3"
   }
 }
