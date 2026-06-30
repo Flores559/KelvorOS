@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.94.0-alpha",
-  "description": "KelvorOS - Operation Echo+ real microphone and camera monitoring foundation",
+  "version": "0.95.0-alpha",
+  "description": "KelvorOS - Operation Voice local voice engine and mission announcements",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

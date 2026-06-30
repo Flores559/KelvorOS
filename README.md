@@ -1,21 +1,15 @@
-# KelvorOS v0.94 Alpha — Operation Echo+
+# KelvorOS v0.95 Alpha — Operation Voice
 
-Echo+ adds the first real local device monitoring layer through Electron/browser permissions.
+Kelvor gets its first local voice engine and mission announcements.
 
-## New in v0.94
-- Echo+ device permission button
-- Real microphone access through `navigator.mediaDevices.getUserMedia`
-- Live microphone level meter
-- Speaking / quiet / silent status
-- Camera permission detection
-- Camera label display when permission is granted
-- Mission Scan now reflects real mic/camera status after device access
-- Updated Echo+ device status panel
-
-## Notes
-- Desktop audio monitoring is still scaffolded.
-- Mic/camera require permission inside the Electron app.
-- If permission is denied, Echo+ keeps running but device checks will show as unavailable.
+## New
+- Startup greeting
+- Voice Center
+- Voice selection
+- Volume/rate/pitch controls
+- Mission Scan spoken summary
+- OBS/Discord/recording/stream voice announcements
+- Speaking animation and subtitles
 
 ## Run
 ```bash
@@ -24,10 +18,8 @@ npm start
 ```
 
 ## GitHub Reminder
-After replacing your project files, commit this update:
-
 ```bash
 git add .
-git commit -m "feat: Operation Echo+ v0.94 - Real microphone and camera monitoring foundation"
+git commit -m "feat: Operation Voice v0.95 - Voice engine and mission announcements"
 git push
 ```
