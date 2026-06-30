@@ -1,18 +1,19 @@
 # Changelog
 
-## v0.93 Alpha — Project Echo
+## v0.94 Alpha — Operation Echo+
 
 ### Added
-- Mission Scan page
-- Mission Scan readiness score
-- Audio Intelligence scaffold
-- Microphone level card
-- Desktop audio level card
-- Camera diagnostics card
-- Enhanced health scoring
-- Smart warnings for audio/camera checks
+- Real microphone permission request
+- Live microphone level meter
+- Speaking/quiet/silent status
+- Camera permission detection
+- Echo+ Device Layer panel
+- Mission Scan local device override
 
 ### Improved
-- Mission Command dashboard
-- Alert system
-- Timeline support
+- Project Echo renamed to Operation Echo+
+- Device diagnostics are now closer to real stream readiness
+
+### Known Issues
+- Desktop audio monitoring remains scaffolded.
+- Full voice alerts are planned for Operation Voice.

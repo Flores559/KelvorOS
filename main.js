@@ -24,7 +24,7 @@ function createWindow() {
     minWidth: 1280,
     minHeight: 820,
     backgroundColor: '#030303',
-    title: 'KelvorOS v0.93 Alpha - Project Echo',
+    title: 'KelvorOS v0.94 Alpha - Operation Echo+',
     webPreferences: {
       preload: __dirname + '/src/core/preload.js',
       nodeIntegration: false,
@@ -176,7 +176,7 @@ function echoAudioScaffold() {
     desktopAudioDetected:true,
     desktopLevel:Math.floor(15 + Math.random() * 45),
     status:level > 35 ? 'Active' : 'Quiet',
-    note:'Audio monitoring scaffold. Real device capture planned for v0.94.'
+    note:'Renderer microphone capture active when permission is granted.'
   };
 }
 
@@ -186,7 +186,7 @@ function cameraScaffold() {
     active:true,
     status:'Ready',
     resolution:'Device check scaffold',
-    note:'Camera diagnostics scaffold. Real camera enumeration planned for v0.94.'
+    note:'Renderer camera detection active when permission is granted.'
   };
 }
 
@@ -239,7 +239,7 @@ function alertsFor({ obs, discord, internet, system, audio, camera }) {
   if (!internet.online) add('critical','Internet Offline','DNS check failed.','Check your internet.');
   if (system.cpuPercent >= 85) add('warning','High CPU',`CPU is ${system.cpuPercent}%.`,'Close unused apps.');
   if (system.ramPercent >= 88) add('warning','High RAM',`RAM is ${system.ramPercent}%.`,'Close unused apps.');
-  if (!alerts.length) add('info','Project Echo Stable','No active issues detected.','Ready for mission scan.');
+  if (!alerts.length) add('info','Operation Echo+ Stable','No active issues detected.','Ready for mission scan.');
   return alerts;
 }
 
@@ -363,7 +363,7 @@ ipcMain.handle('discord-send-live', async (_e, config) => {
       .setColor(0xff1d1d)
       .setTitle('🔴 THE JD LOUNGE IS LIVE!')
       .setDescription(config.message || 'Kelvor has activated the stream. Come hang out with The JD Lounge!')
-      .addFields({ name:'Powered By', value:'KelvorOS', inline:true }, { name:'Module', value:'Project Echo', inline:true })
+      .addFields({ name:'Powered By', value:'KelvorOS', inline:true }, { name:'Module', value:'Operation Echo+', inline:true })
       .setFooter({ text:'The JD Lounge Command Center' })
       .setTimestamp();
     const sent = await channel.send({ embeds:[embed] });
@@ -384,7 +384,7 @@ ipcMain.handle('forge-open-vault', async () => {
 app.whenReady().then(() => {
   ensureVault();
   saveSettings(loadSettings());
-  logEvent('KelvorOS Started','Project Echo v0.93 online.');
+  logEvent('KelvorOS Started','Operation Echo+ v0.94 online.');
   createWindow();
 });
 app.on('window-all-closed', () => {

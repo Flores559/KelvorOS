@@ -6,18 +6,18 @@
 - Operation Sentinel v0.90
 - Operation Overwatch v0.91
 - Overwatch Live Integration v0.92
+- Project Echo v0.93
 
 ## Current
-- Project Echo v0.93
-  - Mission Scan
-  - Audio Intelligence scaffold
-  - Camera diagnostics scaffold
+- Operation Echo+ v0.94
+  - Real microphone monitoring foundation
+  - Camera detection foundation
 
 ## Next
-- Project Echo v0.94
-  - Real microphone monitoring
-  - Real audio input meter
-  - Voice alert foundation
+- Operation Voice v0.95
+  - Spoken system alerts
+  - Kelvor startup greeting
+  - Voice alert toggles
 
 ## Future
 - Operation Oracle: AI recommendations
