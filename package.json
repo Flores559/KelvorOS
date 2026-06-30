@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.91.0-alpha",
-  "description": "KelvorOS - Operation Overwatch Project Aegis live monitoring engine",
+  "version": "0.92.0-alpha",
+  "description": "KelvorOS - Operation Overwatch Live Integration",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

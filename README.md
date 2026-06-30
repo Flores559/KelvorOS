@@ -1,24 +1,18 @@
-# KelvorOS v0.91 Alpha — Operation Overwatch: Project Aegis
+# KelvorOS v0.92 Alpha — Operation Overwatch: Live Integration
 
-Operation Overwatch adds Kelvor’s first live telemetry dashboard.
+This release improves Overwatch by adding live session tracking and stronger stream-control telemetry.
 
-## New in v0.91
-- Project Aegis live monitoring engine
-- Live Mission Health Score
-- OBS telemetry cards
-- Network DNS/ping check
-- CPU/RAM monitoring
-- Discord status monitoring
-- Alert Center 2.0
-- Mission Timeline updates
-- 1-second telemetry refresh loop
-- Enhanced official Kelvor core animation
-- Cleaner module structure scaffold
-
-## Notes
-- Microphone monitoring is scaffolded and will become real in a later Overwatch sprint.
-- CPU percentage currently tracks Kelvor process usage, with RAM using system memory.
-- OBS stream start/stop is available but should be tested carefully.
+## New in v0.92
+- Live session status
+- Live session timer
+- Stream status card
+- Recording status card
+- OBS stream/record timecode display
+- Stream start/stop controls
+- Auto-connect settings scaffold
+- Improved telemetry layout
+- Improved alert and timeline refresh
+- Updated roadmap and changelog
 
 ## Run
 ```bash
@@ -26,9 +20,11 @@ npm install
 npm start
 ```
 
-## GitHub Commit
+## GitHub Reminder
+After replacing your project files, commit this update:
+
 ```bash
 git add .
-git commit -m "feat: Operation Overwatch v0.91 - Project Aegis monitoring engine"
+git commit -m "feat: Operation Overwatch v0.92 - Live integration and session tracking"
 git push
 ```

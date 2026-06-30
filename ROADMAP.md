@@ -4,18 +4,19 @@
 - Project Forge
 - Operation Atlas
 - Operation Sentinel v0.90
+- Operation Overwatch v0.91
 
 ## Current
-- Operation Overwatch v0.91
-  - Live telemetry dashboard
-  - Alert Center 2.0
-  - Mission Health Score
+- Operation Overwatch v0.92
+  - Live integration
+  - Stream session tracking
+  - Stream controls
 
 ## Next
-- Overwatch v0.92
+- Operation Overwatch v0.93
   - Real microphone monitoring
-  - Better CPU/system stats
-  - Stream session tracking
+  - Audio level meter
+  - Muted/silent mic warning
 
 ## Future
 - Operation Oracle: AI recommendations
