@@ -5,18 +5,19 @@
 - Operation Atlas
 - Operation Sentinel v0.90
 - Operation Overwatch v0.91
+- Overwatch Live Integration v0.92
 
 ## Current
-- Operation Overwatch v0.92
-  - Live integration
-  - Stream session tracking
-  - Stream controls
+- Project Echo v0.93
+  - Mission Scan
+  - Audio Intelligence scaffold
+  - Camera diagnostics scaffold
 
 ## Next
-- Operation Overwatch v0.93
+- Project Echo v0.94
   - Real microphone monitoring
-  - Audio level meter
-  - Muted/silent mic warning
+  - Real audio input meter
+  - Voice alert foundation
 
 ## Future
 - Operation Oracle: AI recommendations

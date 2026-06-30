@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.92.0-alpha",
-  "description": "KelvorOS - Operation Overwatch Live Integration",
+  "version": "0.93.0-alpha",
+  "description": "KelvorOS - Project Echo Mission Scan and Audio Intelligence",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

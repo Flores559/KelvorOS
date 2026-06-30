@@ -1,18 +1,18 @@
 # Changelog
 
-## v0.92 Alpha — Operation Overwatch: Live Integration
+## v0.93 Alpha — Project Echo
 
 ### Added
-- Live stream session tracking
-- Session timer
-- Stream status card
-- Recording status card
-- OBS stream/record timecode display
-- Start/stop stream controls
-- Auto-connect settings scaffold
+- Mission Scan page
+- Mission Scan readiness score
+- Audio Intelligence scaffold
+- Microphone level card
+- Desktop audio level card
+- Camera diagnostics card
+- Enhanced health scoring
+- Smart warnings for audio/camera checks
 
 ### Improved
-- Overwatch dashboard layout
-- Alert rendering
-- Timeline rendering
-- Mission health display
+- Mission Command dashboard
+- Alert system
+- Timeline support

@@ -1,18 +1,24 @@
-# KelvorOS v0.92 Alpha — Operation Overwatch: Live Integration
+# KelvorOS v0.93 Alpha — Project Echo
 
-This release improves Overwatch by adding live session tracking and stronger stream-control telemetry.
+Project Echo adds the first Mission Scan experience and audio/camera intelligence foundation.
 
-## New in v0.92
-- Live session status
-- Live session timer
-- Stream status card
-- Recording status card
-- OBS stream/record timecode display
-- Stream start/stop controls
-- Auto-connect settings scaffold
-- Improved telemetry layout
-- Improved alert and timeline refresh
-- Updated roadmap and changelog
+## New in v0.93
+- Project Echo dashboard
+- Mission Scan page
+- Mission Scan readiness score
+- Audio Intelligence scaffold
+- Microphone status card
+- Microphone level meter
+- Desktop audio meter
+- Camera diagnostics scaffold
+- Enhanced health scoring
+- Echo Smart Warnings
+- Mission command panel
+
+## Notes
+- Audio and camera monitoring are scaffolded in this release.
+- Real microphone/device capture is planned for v0.94.
+- OBS, Discord, timeline, and stream controls are carried forward.
 
 ## Run
 ```bash
@@ -25,6 +31,6 @@ After replacing your project files, commit this update:
 
 ```bash
 git add .
-git commit -m "feat: Operation Overwatch v0.92 - Live integration and session tracking"
+git commit -m "feat: Project Echo v0.93 - Mission Scan and Audio Intelligence"
 git push
 ```
