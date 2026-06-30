@@ -1,30 +1,24 @@
-# KelvorOS v0.96 Alpha — Operation Voice+
+# KelvorOS v0.96 Alpha — Operation Voice 2.0
 
-## Features Planned
-- Voice Studio
-- Multiple voice profiles
+This replaces the prototype with a working Voice Studio inside KelvorOS.
+
+## New
+- Working voice preview buttons
+- Voice profiles: Mission Control, Guardian, Nova, Sentinel, Operator, Custom
 - System voice selector
-- Favorite voices
-- Voice preview
-- Adjustable rate, pitch, and volume
-- Announcement categories
-- Foundation for future AI voice providers
+- Adjustable volume, rate, and pitch
+- Profile preview text
+- Saved voice settings
 
-## Voice Profiles
-- Mission Control
-- Guardian
-- Nova
-- Sentinel
-- Operator
-- Custom
+## Run
+```bash
+npm install
+npm start
+```
 
-## Future Providers
-- System Voices (offline)
-- OpenAI Voices
-- ElevenLabs
-- Microsoft Azure Neural Voices
-
-## GitHub
+## GitHub Reminder
+```bash
 git add .
-git commit -m "feat: Operation Voice+ v0.96 - Voice Studio and multi-profile foundation"
+git commit -m "feat: Operation Voice 2.0 v0.96 - Working Voice Studio"
 git push
+```

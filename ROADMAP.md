@@ -1,14 +1,7 @@
-# KelvorOS Roadmap
+# Roadmap
 
 ## Current
-- Operation Voice v0.95
+- Operation Voice 2.0 v0.96
 
 ## Next
-- Operation Genesis v0.96
-  - Command input
-  - Type commands to Kelvor
-
-## Future
-- Operation Oracle
-- Operation Titan
-- KelvorOS v1.0 Beta
+- Operation Genesis v0.97: command input and typed Kelvor commands.

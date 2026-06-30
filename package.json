@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.95.0-alpha",
-  "description": "KelvorOS - Operation Voice local voice engine and mission announcements",
+  "version": "0.96.0-alpha",
+  "description": "KelvorOS - Operation Voice 2.0 working Voice Studio",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

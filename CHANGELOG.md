@@ -1,15 +1,12 @@
 # Changelog
 
-## v0.95 Alpha — Operation Voice
+## v0.96 Alpha — Operation Voice 2.0
 
 ### Added
-- Local voice engine
-- Voice Center
-- Startup greeting
-- Test Voice action
-- Mission Scan voice summary
-- OBS and Discord announcements
-- Speaking animation
+- Working Voice Studio
+- Voice profiles
+- Live system voice preview
+- Mission Control preview button
 
-### Known Issues
-- Voice quality depends on installed system voices.
+### Fixed
+- Replaced non-speaking prototype with integrated speech engine.
