@@ -1,25 +1,30 @@
-# KelvorOS v0.95 Alpha — Operation Voice
+# KelvorOS v0.96 Alpha — Operation Voice+
 
-Kelvor gets its first local voice engine and mission announcements.
+## Features Planned
+- Voice Studio
+- Multiple voice profiles
+- System voice selector
+- Favorite voices
+- Voice preview
+- Adjustable rate, pitch, and volume
+- Announcement categories
+- Foundation for future AI voice providers
 
-## New
-- Startup greeting
-- Voice Center
-- Voice selection
-- Volume/rate/pitch controls
-- Mission Scan spoken summary
-- OBS/Discord/recording/stream voice announcements
-- Speaking animation and subtitles
+## Voice Profiles
+- Mission Control
+- Guardian
+- Nova
+- Sentinel
+- Operator
+- Custom
 
-## Run
-```bash
-npm install
-npm start
-```
+## Future Providers
+- System Voices (offline)
+- OpenAI Voices
+- ElevenLabs
+- Microsoft Azure Neural Voices
 
-## GitHub Reminder
-```bash
+## GitHub
 git add .
-git commit -m "feat: Operation Voice v0.95 - Voice engine and mission announcements"
+git commit -m "feat: Operation Voice+ v0.96 - Voice Studio and multi-profile foundation"
 git push
-```
