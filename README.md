@@ -1,25 +1,24 @@
-# KelvorOS v0.90 Alpha — Operation Sentinel
+# KelvorOS v0.91 Alpha — Operation Overwatch: Project Aegis
 
-Operation Sentinel adds the first true protection layer to KelvorOS.
+Operation Overwatch adds Kelvor’s first live telemetry dashboard.
 
-## New in v0.90
-- Pre-flight diagnostics
-- Mission readiness score
-- Alert Center
-- Mission Timeline
-- System cards
-- Internet availability check
-- Starting scene validation
-- Gameplay scene validation
-- Discord channel validation
-- Forge vault validation
-- Safer Sentinel Go Live sequence
-- Mission Abort button
+## New in v0.91
+- Project Aegis live monitoring engine
+- Live Mission Health Score
+- OBS telemetry cards
+- Network DNS/ping check
+- CPU/RAM monitoring
+- Discord status monitoring
+- Alert Center 2.0
+- Mission Timeline updates
+- 1-second telemetry refresh loop
+- Enhanced official Kelvor core animation
+- Cleaner module structure scaffold
 
-## Important
-The Sentinel Go Live button runs diagnostics first. If critical checks fail, the mission is blocked.
-
-This version starts recording and posts Discord announcements, but the full autonomous Start Stream flow should still be tested carefully.
+## Notes
+- Microphone monitoring is scaffolded and will become real in a later Overwatch sprint.
+- CPU percentage currently tracks Kelvor process usage, with RAM using system memory.
+- OBS stream start/stop is available but should be tested carefully.
 
 ## Run
 ```bash
@@ -27,9 +26,9 @@ npm install
 npm start
 ```
 
-## Suggested Git Commit
+## GitHub Commit
 ```bash
 git add .
-git commit -m "feat: Operation Sentinel v0.90 pre-flight diagnostics"
+git commit -m "feat: Operation Overwatch v0.91 - Project Aegis monitoring engine"
 git push
 ```
