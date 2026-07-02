@@ -1,14 +1,17 @@
 # Changelog
 
-## v0.97 Alpha — Operation Genesis
+## v0.98 Alpha — Operation Genesis+
 
 ### Added
-- Interactive Command Center
-- Natural command aliases
-- Command output terminal
-- Quick command shortcuts
-- Voice responses for command results
+- Brand Lock using official Kelvor K logo
+- Mission Queue page
+- Workflow Engine foundation
+- Prepare Stream workflow
+- Go Live workflow
+- End Stream workflow
+- Shutdown Systems workflow
+- Workflow voice announcements
 
 ### Known Issues
-- Commands are typed only.
-- Voice command recognition is planned for a future release.
+- Some workflow steps may fail if OBS or Discord credentials are not configured.
+- Future versions will add confirmation prompts before starting live streams.

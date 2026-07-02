@@ -1,32 +1,29 @@
-# KelvorOS v0.97 Alpha — Operation Genesis
+# KelvorOS v0.98 Alpha — Operation Genesis+
 
-Operation Genesis adds the first interactive Command Center to KelvorOS.
+Operation Genesis+ adds brand lock, workflow automation, and Mission Queue.
 
-## New in v0.97
-- Genesis Command Center page
-- Typed commands
-- Command parser
-- Smart aliases
-- Command history output
-- Quick command buttons
-- Voice responses from commands
-- Commands integrated with OBS, Discord, Mission Scan, Forge Vault, and system health
+## New in v0.98
+- Official Kelvor K logo locked into assets/brand
+- Brand lock documentation
+- Mission Queue page
+- Workflow Engine foundation
+- Prepare Stream workflow
+- Go Live workflow
+- End Stream workflow
+- Shutdown Systems workflow
+- Command Center expanded with workflow aliases
+- Voice responses for workflows
 
-## Supported Commands
-- help
-- run mission scan
-- start recording
-- stop recording
-- start stream
-- stop stream
-- connect OBS
-- connect Discord
-- send announcement
-- open Forge Vault
-- system health
-- test voice
-- show scenes
-- switch to [scene name]
+## Workflow Commands
+- prepare stream
+- get ready to stream
+- setup stream
+- ready the stream
+- go live
+- begin mission
+- end stream
+- mission complete
+- shutdown systems
 
 ## Run
 ```bash
@@ -37,6 +34,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: Operation Genesis v0.97 - Interactive Command Center"
+git commit -m "feat: Operation Genesis+ v0.98 - Workflow Engine, Mission Queue, and Brand Lock"
 git push
 ```
