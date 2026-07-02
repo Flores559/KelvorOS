@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.96.0-alpha",
-  "description": "KelvorOS - Operation Voice 2.0 working Voice Studio",
+  "version": "0.97.0-alpha",
+  "description": "KelvorOS - Operation Genesis interactive Command Center",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

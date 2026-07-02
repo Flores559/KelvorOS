@@ -1,12 +1,14 @@
 # Changelog
 
-## v0.96 Alpha — Operation Voice 2.0
+## v0.97 Alpha — Operation Genesis
 
 ### Added
-- Working Voice Studio
-- Voice profiles
-- Live system voice preview
-- Mission Control preview button
+- Interactive Command Center
+- Natural command aliases
+- Command output terminal
+- Quick command shortcuts
+- Voice responses for command results
 
-### Fixed
-- Replaced non-speaking prototype with integrated speech engine.
+### Known Issues
+- Commands are typed only.
+- Voice command recognition is planned for a future release.

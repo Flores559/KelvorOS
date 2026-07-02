@@ -1,14 +1,32 @@
-# KelvorOS v0.96 Alpha — Operation Voice 2.0
+# KelvorOS v0.97 Alpha — Operation Genesis
 
-This replaces the prototype with a working Voice Studio inside KelvorOS.
+Operation Genesis adds the first interactive Command Center to KelvorOS.
 
-## New
-- Working voice preview buttons
-- Voice profiles: Mission Control, Guardian, Nova, Sentinel, Operator, Custom
-- System voice selector
-- Adjustable volume, rate, and pitch
-- Profile preview text
-- Saved voice settings
+## New in v0.97
+- Genesis Command Center page
+- Typed commands
+- Command parser
+- Smart aliases
+- Command history output
+- Quick command buttons
+- Voice responses from commands
+- Commands integrated with OBS, Discord, Mission Scan, Forge Vault, and system health
+
+## Supported Commands
+- help
+- run mission scan
+- start recording
+- stop recording
+- start stream
+- stop stream
+- connect OBS
+- connect Discord
+- send announcement
+- open Forge Vault
+- system health
+- test voice
+- show scenes
+- switch to [scene name]
 
 ## Run
 ```bash
@@ -19,6 +37,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: Operation Voice 2.0 v0.96 - Working Voice Studio"
+git commit -m "feat: Operation Genesis v0.97 - Interactive Command Center"
 git push
 ```
