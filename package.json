@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "1.1.0-beta",
-  "description": "KelvorOS v1.1 Beta - Operation Ascension voice input",
+  "version": "1.2.0-beta",
+  "description": "KelvorOS v1.2 Beta - Voice Reliability",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

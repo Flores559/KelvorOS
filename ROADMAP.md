@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current
-- v1.1 Operation Ascension
+- v1.2 Voice Reliability
 
 ## Next
-- v1.2 Voice Reliability / fallback cloud speech option
+- v1.3 Cloud Speech option or native speech bridge

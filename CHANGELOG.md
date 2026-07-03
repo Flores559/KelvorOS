@@ -1,12 +1,14 @@
 # Changelog
 
-## v1.1 Beta — Operation Ascension
+## v1.2 Beta — Voice Reliability
 
 ### Added
-- Push-to-talk voice input
-- Speech recognition command routing
-- Listening UI state
-- JD greeting
+- Microphone permission check
+- Listening timeout control
+- Voice debug panel
+- Simulate heard command button
+- Typed fallback messaging
 
-### Notes
-- Voice input depends on browser/Electron speech recognition support.
+### Improved
+- Push-to-talk state handling
+- Clear voice error messages

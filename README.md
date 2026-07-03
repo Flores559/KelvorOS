@@ -1,9 +1,13 @@
-# KelvorOS v1.1 Beta — Operation Ascension
+# KelvorOS v1.2 Beta — Voice Reliability
 
-Adds push-to-talk voice input and changes startup greeting to **Welcome back, JD.**
+Improves push-to-talk stability with microphone permission checks, longer listening window, debug messages, and typed fallback.
 
-## Voice Commands
-Say: `Kelvor prepare stream`, `Kelvor go live`, `Kelvor run mission scan`, `Kelvor system health`.
+## Test
+1. Click Check Microphone.
+2. Click Start Listening.
+3. Wait for Listening...
+4. Say: Kelvor prepare stream.
+5. If unsupported, type: prepare stream.
 
 ## Run
 ```bash
@@ -14,6 +18,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: KelvorOS v1.1 Beta - Operation Ascension voice input"
+git commit -m "fix: KelvorOS v1.2 Beta - Voice Reliability and typed fallback"
 git push
 ```
