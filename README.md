@@ -1,18 +1,19 @@
-# KelvorOS v2.1 — StreamLink Phase
+# KelvorOS v2.2 — DiscordLink Phase
 
-This builds on the permanent v2.0 Foundation and adds the first real stream-control phase.
+This builds on the permanent v2.x codebase and adds Discord bot connection + announcement foundation.
 
 ## Included
 - Electron app
-- OBS WebSocket connection
-- OBS status panel
-- Scene switching commands
-- Recording controls
-- Stream controls
-- Prepare Stream workflow
-- Forge Vault
-- Atlas profile
-- Timeline logging
+- OBS StreamLink preserved
+- Discord bot connection
+- Discord announcement sender
+- Discord status panel
+- Prepare Stream workflow attempts:
+  - Connect OBS
+  - Connect Discord
+  - Set Starting Soon
+  - Start recording
+  - Send Discord announcement
 
 ## Run
 ```bash
@@ -20,18 +21,18 @@ npm install
 npm start
 ```
 
-## OBS Setup
-In OBS:
-1. Tools
-2. WebSocket Server Settings
-3. Enable WebSocket server
-4. Port: 4455
-5. Add password only if you want one
-6. Save the same settings inside KelvorOS StreamLink
+## Discord Setup
+1. Create Discord application/bot in Discord Developer Portal.
+2. Copy bot token.
+3. Invite bot to your server with permission to send messages.
+4. Copy channel ID from Discord developer mode.
+5. Paste token + channel ID into DiscordLink settings.
+6. Click Connect Discord.
+7. Click Send Announcement.
 
 ## GitHub Commit
 ```bash
 git add .
-git commit -m "feat: KelvorOS v2.1 StreamLink Phase"
+git commit -m "feat: KelvorOS v2.2 DiscordLink Phase"
 git push
 ```

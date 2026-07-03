@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "2.1.0-streamlink",
-  "description": "KelvorOS v2.1 StreamLink Phase - OBS control foundation",
+  "version": "2.2.0-discordlink",
+  "description": "KelvorOS v2.2 DiscordLink Phase - Discord connection and announcements",
   "main": "main.js",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "electron": "^31.0.0",
-    "obs-websocket-js": "^5.0.6"
+    "obs-websocket-js": "^5.0.6",
+    "discord.js": "^14.15.3"
   }
 }
