@@ -1,10 +1,12 @@
 # Changelog
 
-## v1.0 Beta — Operation Oracle
+## v1.1 Beta — Operation Ascension
 
 ### Added
-- Oracle command understanding
-- Real OBS connection restored
-- Real Discord connection restored
-- Transparent logo brand lock
-- Complete runnable beta package
+- Push-to-talk voice input
+- Speech recognition command routing
+- Listening UI state
+- JD greeting
+
+### Notes
+- Voice input depends on browser/Electron speech recognition support.

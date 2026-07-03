@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current
-- v1.0 Beta Operation Oracle
+- v1.1 Operation Ascension
 
 ## Next
-- Operation Titan: tournament manager and plugin-ready architecture
+- v1.2 Voice Reliability / fallback cloud speech option

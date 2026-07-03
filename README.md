@@ -1,6 +1,9 @@
-# KelvorOS v1.0 Beta — Operation Oracle
+# KelvorOS v1.1 Beta — Operation Ascension
 
-Complete runnable beta with transparent Kelvor K brand lock, real OBS reconnect, real Discord reconnect, Oracle command understanding, Mission Queue, Voice Studio, Mission Scan, Atlas Profile, and Forge Vault.
+Adds push-to-talk voice input and changes startup greeting to **Welcome back, JD.**
+
+## Voice Commands
+Say: `Kelvor prepare stream`, `Kelvor go live`, `Kelvor run mission scan`, `Kelvor system health`.
 
 ## Run
 ```bash
@@ -11,6 +14,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: KelvorOS v1.0 Beta - Operation Oracle"
+git commit -m "feat: KelvorOS v1.1 Beta - Operation Ascension voice input"
 git push
 ```
