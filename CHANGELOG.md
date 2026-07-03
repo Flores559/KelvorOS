@@ -1,14 +1,11 @@
 # Changelog
 
-## v1.5 Beta — Native Speech Bridge
-
-### Added
-- Speech Bridge module
-- Speech route tracking
-- Speech provider settings
-- Bridge status command
-- Simulation voice route buttons
-
-### Improved
-- Foundation for native speech integration
-- Typed fallback remains stable
+## v2.0 Foundation
+- Created permanent KelvorOS app foundation
+- Added AI Core command router
+- Added Speech Bridge foundation
+- Added Sentinel foundation
+- Added Atlas profile
+- Added Forge Vault
+- Added Timeline
+- Added branded UI

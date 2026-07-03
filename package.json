@@ -1,11 +1,13 @@
 {
   "name": "kelvor-os",
-  "version": "1.5.0-beta",
-  "description": "KelvorOS v1.5 Beta - Native Speech Bridge",
+  "version": "2.0.0-foundation",
+  "description": "KelvorOS v2.0 Foundation - Permanent KelvorOS codebase",
   "main": "main.js",
+  "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron ."
+    "dev": "electron .",
+    "check": "node scripts/health-check.js"
   },
   "dependencies": {
     "electron": "^31.0.0",

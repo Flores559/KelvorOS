@@ -1,7 +1,19 @@
 # Roadmap
 
-## Current
-- v1.5 Native Speech Bridge foundation
+## v2.0 Foundation
+Permanent app base.
 
-## Next
-- v1.6 Local/Cloud Speech Provider integration
+## v2.1
+Real OBS integration.
+
+## v2.2
+Real Discord integration.
+
+## v2.3
+Native speech provider.
+
+## v2.4
+Persistent memory.
+
+## v3.0
+Kelvor AI assistant.
