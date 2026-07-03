@@ -1,16 +1,6 @@
-# KelvorOS v1.4 Beta — Operation Aegis
+# KelvorOS v1.5 Beta — Native Speech Bridge
 
-Operation Aegis adds a voice protection layer and native voice bridge foundation.
-
-## Included
-- Aegis Core page
-- Aegis shield state: Standby / Armed
-- Hybrid voice fallback foundation
-- Native voice bridge planning layer
-- Simulated voice command routing
-- OBS and Discord integration preserved
-- Transparent Kelvor K brand lock
-- Startup greeting: Welcome back, JD.
+Adds a native speech bridge foundation with route tracking, speech status, simulation routing, and stable typed fallback.
 
 ## Run
 ```bash
@@ -21,6 +11,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: KelvorOS v1.4 Beta - Operation Aegis voice shield"
+git commit -m "feat: KelvorOS v1.5 Beta - Native Speech Bridge foundation"
 git push
 ```

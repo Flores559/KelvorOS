@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "1.4.0-beta",
-  "description": "KelvorOS v1.4 Beta - Operation Aegis",
+  "version": "1.5.0-beta",
+  "description": "KelvorOS v1.5 Beta - Native Speech Bridge",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

@@ -1,11 +1,7 @@
 # Roadmap
 
 ## Current
-- v1.4 Operation Aegis
-  - Voice shield
-  - Native voice bridge foundation
+- v1.5 Native Speech Bridge foundation
 
 ## Next
-- v1.5 Native Speech Bridge
-  - Move beyond browser SpeechRecognition limitations
-  - Optional cloud/local speech engine
+- v1.6 Local/Cloud Speech Provider integration

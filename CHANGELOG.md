@@ -1,15 +1,14 @@
 # Changelog
 
-## v1.4 Beta — Operation Aegis
+## v1.5 Beta — Native Speech Bridge
 
 ### Added
-- Aegis Core module
-- Aegis shield state
-- Voice protection layer
-- Native voice bridge foundation
-- Aegis status command
-- Aegis-guarded Prepare Stream workflow
+- Speech Bridge module
+- Speech route tracking
+- Speech provider settings
+- Bridge status command
+- Simulation voice route buttons
 
 ### Improved
-- Voice fallback architecture
-- More stable roadmap toward native speech
+- Foundation for native speech integration
+- Typed fallback remains stable
