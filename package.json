@@ -1,17 +1,15 @@
 {
   "name": "kelvor-os",
-  "version": "2.0.0-foundation",
-  "description": "KelvorOS v2.0 Foundation - Permanent KelvorOS codebase",
+  "version": "2.1.0-streamlink",
+  "description": "KelvorOS v2.1 StreamLink Phase - OBS control foundation",
   "main": "main.js",
   "private": true,
   "scripts": {
     "start": "electron .",
-    "dev": "electron .",
-    "check": "node scripts/health-check.js"
+    "dev": "electron ."
   },
   "dependencies": {
     "electron": "^31.0.0",
-    "obs-websocket-js": "^5.0.6",
-    "discord.js": "^14.15.3"
+    "obs-websocket-js": "^5.0.6"
   }
 }
