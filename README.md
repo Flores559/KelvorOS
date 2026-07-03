@@ -1,12 +1,16 @@
-# KelvorOS v1.3 Beta — Voice Bridge
+# KelvorOS v1.4 Beta — Operation Aegis
 
-Voice Bridge adds diagnostics for browser speech recognition, typed fallback, simulation mode, wake-word cleanup, and clear reporting when Electron speech recognition is unavailable.
+Operation Aegis adds a voice protection layer and native voice bridge foundation.
 
-## Test
-1. Run Voice Diagnostics.
-2. Check Microphone.
-3. Try Start Listening.
-4. If unavailable, use Simulate Voice or typed fallback.
+## Included
+- Aegis Core page
+- Aegis shield state: Standby / Armed
+- Hybrid voice fallback foundation
+- Native voice bridge planning layer
+- Simulated voice command routing
+- OBS and Discord integration preserved
+- Transparent Kelvor K brand lock
+- Startup greeting: Welcome back, JD.
 
 ## Run
 ```bash
@@ -17,6 +21,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: KelvorOS v1.3 Beta - Voice Bridge diagnostics and fallback"
+git commit -m "feat: KelvorOS v1.4 Beta - Operation Aegis voice shield"
 git push
 ```

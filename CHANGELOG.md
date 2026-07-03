@@ -1,14 +1,15 @@
 # Changelog
 
-## v1.3 Beta — Voice Bridge
+## v1.4 Beta — Operation Aegis
 
 ### Added
-- Voice Bridge diagnostics page
-- Recognition support status
-- Wake word setting
-- Voice mode: Browser, Typed Fallback, Simulation
-- Better debug reporting
+- Aegis Core module
+- Aegis shield state
+- Voice protection layer
+- Native voice bridge foundation
+- Aegis status command
+- Aegis-guarded Prepare Stream workflow
 
 ### Improved
-- Voice fallback workflow
-- More honest status when speech recognition is unavailable
+- Voice fallback architecture
+- More stable roadmap toward native speech
