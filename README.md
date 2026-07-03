@@ -1,29 +1,21 @@
-# KelvorOS v0.98 Alpha — Operation Genesis+
+# KelvorOS v0.99 Alpha — Foundation
 
-Operation Genesis+ adds brand lock, workflow automation, and Mission Queue.
+This is a complete runnable Electron foundation build.
 
-## New in v0.98
-- Official Kelvor K logo locked into assets/brand
-- Brand lock documentation
-- Mission Queue page
-- Workflow Engine foundation
-- Prepare Stream workflow
-- Go Live workflow
-- End Stream workflow
-- Shutdown Systems workflow
-- Command Center expanded with workflow aliases
-- Voice responses for workflows
+## Important
+This build fixes the missing `main.js` issue.
 
-## Workflow Commands
-- prepare stream
-- get ready to stream
-- setup stream
-- ready the stream
-- go live
-- begin mission
-- end stream
-- mission complete
-- shutdown systems
+## Included
+- main.js
+- preload.js
+- official Kelvor K logo
+- runnable Electron app
+- Command Center
+- Mission Queue
+- Voice Studio
+- Mission Scan
+- Atlas profile
+- Forge Vault
 
 ## Run
 ```bash
@@ -34,6 +26,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "feat: Operation Genesis+ v0.98 - Workflow Engine, Mission Queue, and Brand Lock"
+git commit -m "fix: KelvorOS v0.99 runnable foundation with main.js"
 git push
 ```

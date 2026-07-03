@@ -1,5 +1,7 @@
 {
   "name": "kelvor-os",
+  "version": "0.99.0-alpha",
+  "description": "KelvorOS complete runnable foundation with Genesis+ command center",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -9,7 +11,5 @@
     "electron": "^31.0.0",
     "obs-websocket-js": "^5.0.6",
     "discord.js": "^14.15.3"
-  },
-  "version": "0.98.0-alpha",
-  "description": "KelvorOS - Operation Genesis+ workflow engine, mission queue, and brand lock"
+  }
 }
