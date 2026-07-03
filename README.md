@@ -1,21 +1,6 @@
-# KelvorOS v0.99 Alpha — Foundation
+# KelvorOS v1.0 Beta — Operation Oracle
 
-This is a complete runnable Electron foundation build.
-
-## Important
-This build fixes the missing `main.js` issue.
-
-## Included
-- main.js
-- preload.js
-- official Kelvor K logo
-- runnable Electron app
-- Command Center
-- Mission Queue
-- Voice Studio
-- Mission Scan
-- Atlas profile
-- Forge Vault
+Complete runnable beta with transparent Kelvor K brand lock, real OBS reconnect, real Discord reconnect, Oracle command understanding, Mission Queue, Voice Studio, Mission Scan, Atlas Profile, and Forge Vault.
 
 ## Run
 ```bash
@@ -26,6 +11,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "fix: KelvorOS v0.99 runnable foundation with main.js"
+git commit -m "feat: KelvorOS v1.0 Beta - Operation Oracle"
 git push
 ```

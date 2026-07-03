@@ -1,11 +1,10 @@
 # Changelog
 
-## v0.99 Alpha — Foundation
-
-### Fixed
-- Restored complete Electron entry point with `main.js`.
-- Locked official Kelvor K branding.
+## v1.0 Beta — Operation Oracle
 
 ### Added
-- Complete runnable foundation package.
-- Genesis+ workflow preview.
+- Oracle command understanding
+- Real OBS connection restored
+- Real Discord connection restored
+- Transparent logo brand lock
+- Complete runnable beta package

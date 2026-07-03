@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "0.99.0-alpha",
-  "description": "KelvorOS complete runnable foundation with Genesis+ command center",
+  "version": "1.0.0-beta",
+  "description": "KelvorOS v1.0 Beta - Operation Oracle",
   "main": "main.js",
   "scripts": {
     "start": "electron .",

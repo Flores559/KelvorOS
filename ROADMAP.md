@@ -1,11 +1,7 @@
 # Roadmap
 
 ## Current
-- v0.99 Foundation
-  - Stable runnable base
+- v1.0 Beta Operation Oracle
 
 ## Next
-- v1.0 Beta
-  - Reconnect real OBS module
-  - Reconnect real Discord module
-  - Installer preparation
+- Operation Titan: tournament manager and plugin-ready architecture
