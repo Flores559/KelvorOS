@@ -1,14 +1,14 @@
 # Changelog
 
-## v1.2 Beta — Voice Reliability
+## v1.3 Beta — Voice Bridge
 
 ### Added
-- Microphone permission check
-- Listening timeout control
-- Voice debug panel
-- Simulate heard command button
-- Typed fallback messaging
+- Voice Bridge diagnostics page
+- Recognition support status
+- Wake word setting
+- Voice mode: Browser, Typed Fallback, Simulation
+- Better debug reporting
 
 ### Improved
-- Push-to-talk state handling
-- Clear voice error messages
+- Voice fallback workflow
+- More honest status when speech recognition is unavailable

@@ -1,7 +1,7 @@
 # Roadmap
 
 ## Current
-- v1.2 Voice Reliability
+- v1.3 Voice Bridge
 
 ## Next
-- v1.3 Cloud Speech option or native speech bridge
+- v1.4 Native Speech Bridge or cloud speech integration

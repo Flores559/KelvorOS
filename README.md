@@ -1,13 +1,12 @@
-# KelvorOS v1.2 Beta — Voice Reliability
+# KelvorOS v1.3 Beta — Voice Bridge
 
-Improves push-to-talk stability with microphone permission checks, longer listening window, debug messages, and typed fallback.
+Voice Bridge adds diagnostics for browser speech recognition, typed fallback, simulation mode, wake-word cleanup, and clear reporting when Electron speech recognition is unavailable.
 
 ## Test
-1. Click Check Microphone.
-2. Click Start Listening.
-3. Wait for Listening...
-4. Say: Kelvor prepare stream.
-5. If unsupported, type: prepare stream.
+1. Run Voice Diagnostics.
+2. Check Microphone.
+3. Try Start Listening.
+4. If unavailable, use Simulate Voice or typed fallback.
 
 ## Run
 ```bash
@@ -18,6 +17,6 @@ npm start
 ## GitHub Reminder
 ```bash
 git add .
-git commit -m "fix: KelvorOS v1.2 Beta - Voice Reliability and typed fallback"
+git commit -m "feat: KelvorOS v1.3 Beta - Voice Bridge diagnostics and fallback"
 git push
 ```

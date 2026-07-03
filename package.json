@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "1.2.0-beta",
-  "description": "KelvorOS v1.2 Beta - Voice Reliability",
+  "version": "1.3.0-beta",
+  "description": "KelvorOS v1.3 Beta - Voice Bridge",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
