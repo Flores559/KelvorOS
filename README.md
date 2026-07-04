@@ -1,6 +1,6 @@
-# KelvorOS v2.4 — MemoryCore
+# KelvorOS v2.5 — Creator Dashboard
 
-MemoryCore adds persistent memory, command history, favorites, projects, and a searchable memory dashboard.
+Unified creator control center for The JD Lounge and KelvorOS planning.
 
 ## Run
 ```bash
@@ -9,18 +9,16 @@ npm start
 ```
 
 ## Commands
-- memory status
-- remember Kelvor is my AI assistant
-- search memory Kelvor
-- recent commands
-- projects
-- favorites
-- system health
-- prepare stream
+- dashboard status
+- add task Test OBS
+- add idea Kelvor teaser
+- post caption Something is coming
+- launch checklist
+- open vault
 
 ## GitHub Commit
 ```bash
 git add .
-git commit -m "feat: KelvorOS v2.4 MemoryCore"
+git commit -m "feat: KelvorOS v2.5 Creator Dashboard"
 git push
 ```

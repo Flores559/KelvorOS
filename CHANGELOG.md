@@ -1,10 +1,10 @@
 # Changelog
 
-## v2.4 MemoryCore
-- Added persistent memory storage
-- Added command history
-- Added Memory Dashboard
-- Added project context
-- Added favorites
-- Added memory search
-- Added bundled Kelvor logo asset
+## v2.5 Creator Dashboard
+- Added creator dashboard
+- Added task board
+- Added idea bank
+- Added post drafts
+- Added launch checklist
+- Added creator vault
+- Bundled Kelvor branding

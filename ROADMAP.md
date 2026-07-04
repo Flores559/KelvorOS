@@ -1,7 +1,10 @@
 # Roadmap
 
-## v2.4 MemoryCore
-Persistent memory and command history.
-
 ## v2.5 Creator Dashboard
-Unified stream launch and creator control center.
+Creator control center.
+
+## v2.6 Voice Provider
+Real speech-to-text provider integration.
+
+## v2.7 Automation Hub
+Recurring creator workflows.
