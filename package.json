@@ -1,9 +1,9 @@
 {
   "name": "kelvor-os",
-  "version": "2.3.1-voicecore-hotfix",
-  "private": true,
-  "description": "KelvorOS v2.3.1 VoiceCore Hotfix - runnable Electron app",
+  "version": "2.4.0-memorycore",
+  "description": "KelvorOS v2.4 MemoryCore",
   "main": "main.js",
+  "private": true,
   "scripts": {
     "start": "electron .",
     "dev": "electron ."

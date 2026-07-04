@@ -1,6 +1,6 @@
-# KelvorOS v2.3.1 VoiceCore Hotfix
+# KelvorOS v2.4 — MemoryCore
 
-This fixes the missing Electron entry file from v2.3.
+MemoryCore adds persistent memory, command history, favorites, projects, and a searchable memory dashboard.
 
 ## Run
 ```bash
@@ -8,9 +8,19 @@ npm install
 npm start
 ```
 
-## GitHub
+## Commands
+- memory status
+- remember Kelvor is my AI assistant
+- search memory Kelvor
+- recent commands
+- projects
+- favorites
+- system health
+- prepare stream
+
+## GitHub Commit
 ```bash
 git add .
-git commit -m "fix: KelvorOS v2.3.1 VoiceCore runnable Electron app"
+git commit -m "feat: KelvorOS v2.4 MemoryCore"
 git push
 ```
