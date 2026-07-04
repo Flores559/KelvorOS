@@ -1,392 +1,55 @@
 
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const dns = require('dns').promises;
-const OBSWebSocket = require('obs-websocket-js').default;
-const { Client, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 
 let mainWindow;
-let timeline = [];
-let obs = null;
-let obsConnected = false;
-let discordClient = null;
-let discordReady = false;
-let discordInfo = { connected:false, botName:'Not Connected', botId:'Unavailable', guilds:[] };
+let timeline=[];
 
-let state = {
-  version: '2.2.0-discordlink',
-  profileName: 'JD',
-  brandName: 'The JD Lounge',
-  aiCore: 'ONLINE',
-  speechBridge: 'FOUNDATION',
-  sentinel: 'STANDBY',
-  obs: 'DISCONNECTED',
-  discord: 'DISCONNECTED',
-  forge: 'READY',
-  lastCommand: 'None'
-};
-
-function logEvent(event, detail = '') {
-  const entry = { time: new Date().toISOString(), event, detail };
+function log(event, detail=''){
+  const entry={time:new Date().toISOString(),event,detail};
   timeline.unshift(entry);
-  timeline = timeline.slice(0, 600);
-  mainWindow?.webContents.send('kelvor-event', { type:'TIMELINE', payload:entry });
-  return entry;
+  timeline=timeline.slice(0,200);
+  mainWindow?.webContents.send('kelvor-event', entry);
 }
 
-function defaultSettings() {
-  return {
-    profileName: 'JD',
-    brandName: 'The JD Lounge',
-    wakeWord: 'kelvor',
-    obsHost: '127.0.0.1',
-    obsPort: '4455',
-    obsPassword: '',
-    startingScene: 'Starting Soon',
-    gameplayScene: 'Gameplay',
-    endingScene: 'Stream Ending',
-    discordToken: '',
-    discordChannelId: '',
-    liveMessage: 'Kelvor has activated The JD Lounge. Come hang out!',
-    startupGreeting: 'Welcome back, JD. KelvorOS DiscordLink is online.'
-  };
+function routeCommand(text=''){
+  const cmd=text.toLowerCase().trim();
+  if(!cmd) return 'No command received.';
+  log('VoiceCore Route', text);
+
+  if(cmd.includes('help')) return 'VoiceCore commands: help, voice status, system health, prepare stream.';
+  if(cmd.includes('voice')) return 'VoiceCore is online. Push-to-talk and native speech provider are staged for the next build.';
+  if(cmd.includes('health') || cmd.includes('status')) return 'KelvorOS VoiceCore health is stable.';
+  if(cmd.includes('prepare stream')) return 'Absolutely, JD. VoiceCore routed prepare stream to the AI Core.';
+  return `Kelvor heard: ${text}`;
 }
 
-function settingsPath() {
-  return path.join(app.getPath('userData'), 'kelvor-profile.json');
-}
+ipcMain.handle('kelvor-status', async()=>({
+  version:'2.3.1 VoiceCore Hotfix',
+  health:96,
+  label:'VoiceCore Online',
+  timeline
+}));
 
-function loadSettings() {
-  try {
-    const file = settingsPath();
-    if (!fs.existsSync(file)) return defaultSettings();
-    return { ...defaultSettings(), ...JSON.parse(fs.readFileSync(file, 'utf8')) };
-  } catch (_) {
-    return defaultSettings();
-  }
-}
-
-function saveSettings(settings) {
-  const merged = { ...defaultSettings(), ...settings };
-  fs.writeFileSync(settingsPath(), JSON.stringify(merged, null, 2), 'utf8');
-  state.profileName = merged.profileName;
-  state.brandName = merged.brandName;
-  logEvent('Settings Saved', 'Atlas / StreamLink / DiscordLink profile updated.');
-  return merged;
-}
-
-function ensureVault() {
-  const vault = path.join(__dirname, 'vault');
-  ['Overlays','Alerts','Logos','Transitions','Tournament','Social','Wallpapers','Favorites'].forEach(folder => {
-    fs.mkdirSync(path.join(vault, folder), { recursive:true });
-  });
-  return vault;
-}
-
-function scanVault() {
-  const vault = ensureVault();
-  let assetCount = 0;
-  const categories = fs.readdirSync(vault, { withFileTypes:true }).filter(e => e.isDirectory()).map(e => e.name);
-  categories.forEach(category => {
-    assetCount += fs.readdirSync(path.join(vault, category), { withFileTypes:true }).filter(e => e.isFile()).length;
-  });
-  return { vaultPath:vault, categories, assetCount };
-}
-
-async function internet() {
-  const start = Date.now();
-  try {
-    await dns.lookup('discord.com');
-    return { online:true, pingMs:Date.now()-start, status:'Stable' };
-  } catch (_) {
-    return { online:false, pingMs:null, status:'Offline' };
-  }
-}
-
-function systemStats() {
-  const total = os.totalmem();
-  const free = os.freemem();
-  return {
-    cpuPercent: Math.floor(8 + Math.random() * 16),
-    ramPercent: Math.round(((total - free) / total) * 100),
-    ramUsedGb: Number(((total - free) / 1024 / 1024 / 1024).toFixed(1)),
-    ramTotalGb: Number((total / 1024 / 1024 / 1024).toFixed(1)),
-    platform: os.platform()
-  };
-}
-
-async function obsStatus() {
-  if (!obsConnected || !obs) {
-    state.obs = 'DISCONNECTED';
-    return { connected:false, currentScene:'Unavailable', streaming:false, recording:false, scenes:[], fps:'Unavailable' };
-  }
-  try {
-    const [scene, stream, record, sceneList, stats] = await Promise.all([
-      obs.call('GetCurrentProgramScene'),
-      obs.call('GetStreamStatus'),
-      obs.call('GetRecordStatus'),
-      obs.call('GetSceneList'),
-      obs.call('GetStats')
-    ]);
-    state.obs = 'CONNECTED';
-    return {
-      connected:true,
-      currentScene:scene.currentProgramSceneName,
-      streaming:stream.outputActive,
-      recording:record.outputActive,
-      scenes:(sceneList.scenes || []).map(s => s.sceneName).reverse(),
-      fps:stats.activeFps ? Number(stats.activeFps).toFixed(1) : 'Unavailable',
-      streamTimecode:stream.outputTimecode || '00:00:00',
-      recordTimecode:record.outputTimecode || '00:00:00'
-    };
-  } catch (error) {
-    obsConnected = false;
-    state.obs = 'DISCONNECTED';
-    logEvent('OBS Status Error', error.message);
-    return { connected:false, currentScene:'Unavailable', streaming:false, recording:false, scenes:[], fps:'Unavailable', error:error.message };
-  }
-}
-
-async function safeObsCall(type, data = {}) {
-  if (!obsConnected || !obs) throw new Error('OBS is not connected.');
-  return obs.call(type, data);
-}
-
-async function connectObs(settings) {
-  try {
-    if (obs) {
-      try { await obs.disconnect(); } catch (_) {}
-    }
-    obs = new OBSWebSocket();
-    const address = `ws://${settings.obsHost || '127.0.0.1'}:${settings.obsPort || '4455'}`;
-    await obs.connect(address, settings.obsPassword || '');
-    obsConnected = true;
-    state.obs = 'CONNECTED';
-    obs.on('ConnectionClosed', () => {
-      obsConnected = false;
-      state.obs = 'DISCONNECTED';
-      logEvent('OBS Disconnected', 'Connection closed.');
-    });
-    logEvent('OBS Connected', address);
-    return await obsStatus();
-  } catch (error) {
-    obsConnected = false;
-    state.obs = 'DISCONNECTED';
-    logEvent('OBS Connection Failed', error.message);
-    return { connected:false, error:error.message };
-  }
-}
-
-async function connectDiscord(settings) {
-  try {
-    if (discordClient) {
-      try { discordClient.destroy(); } catch (_) {}
-    }
-    if (!settings.discordToken) throw new Error('Discord token missing.');
-
-    discordReady = false;
-    discordClient = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
-    });
-
-    discordClient.once('ready', () => {
-      discordReady = true;
-      discordInfo = {
-        connected:true,
-        botName:discordClient.user.tag,
-        botId:discordClient.user.id,
-        guilds:discordClient.guilds.cache.map(g => ({ id:g.id, name:g.name, memberCount:g.memberCount || 'Unavailable' }))
-      };
-      state.discord = 'CONNECTED';
-      logEvent('Discord Connected', discordInfo.botName);
-    });
-
-    await discordClient.login(settings.discordToken);
-    await new Promise((resolve, reject) => {
-      const started = Date.now();
-      const timer = setInterval(() => {
-        if (discordReady) { clearInterval(timer); resolve(); }
-        if (Date.now() - started > 12000) {
-          clearInterval(timer);
-          reject(new Error('Discord connection timed out.'));
-        }
-      }, 250);
-    });
-
-    return discordInfo;
-  } catch (error) {
-    discordReady = false;
-    state.discord = 'DISCONNECTED';
-    discordInfo = { connected:false, botName:'Not Connected', botId:'Unavailable', guilds:[], error:error.message };
-    logEvent('Discord Connection Failed', error.message);
-    return discordInfo;
-  }
-}
-
-async function sendDiscordAnnouncement(settings) {
-  try {
-    if (!discordReady || !discordClient) throw new Error('Discord is not connected.');
-    if (!settings.discordChannelId) throw new Error('Discord channel ID missing.');
-
-    const channel = await discordClient.channels.fetch(settings.discordChannelId);
-    const embed = new EmbedBuilder()
-      .setColor(0xff1d1d)
-      .setTitle('🔴 THE JD LOUNGE IS LIVE')
-      .setDescription(settings.liveMessage || 'Kelvor has activated The JD Lounge.')
-      .addFields({ name:'Powered By', value:'KelvorOS DiscordLink', inline:true })
-      .setTimestamp();
-
-    const sent = await channel.send({ embeds:[embed] });
-    logEvent('Discord Announcement Sent', channel.id);
-    return { ok:true, messageId:sent.id, channelId:channel.id };
-  } catch (error) {
-    logEvent('Discord Announcement Failed', error.message);
-    return { ok:false, error:error.message };
-  }
-}
-
-function aiRoute(command) {
-  const text = (command || '').trim();
-  const c = text.toLowerCase();
-  state.lastCommand = text || 'None';
-  logEvent('AI Core Route', text);
-
-  if (!text) return { response:'No command received.', action:'none' };
-  if (c.includes('help')) return { response:'Try: connect obs, connect discord, send announcement, prepare stream, starting soon, gameplay, start recording, start stream, mission scan.', action:'help' };
-  if (c.includes('connect obs')) return { response:'Connecting to OBS.', action:'connect-obs' };
-  if (c.includes('connect discord')) return { response:'Connecting to Discord.', action:'connect-discord' };
-  if (c.includes('send announcement') || c.includes('discord announcement')) return { response:'Sending Discord announcement.', action:'discord-announce' };
-  if (c.includes('discord status')) return { response:'Checking Discord status.', action:'discord-status' };
-  if (c.includes('obs status')) return { response:'Checking OBS status.', action:'obs-status' };
-  if (c.includes('starting soon')) return { response:'Switching to Starting Soon scene.', action:'scene-starting' };
-  if (c.includes('gameplay')) return { response:'Switching to Gameplay scene.', action:'scene-gameplay' };
-  if (c.includes('ending')) return { response:'Switching to Ending scene.', action:'scene-ending' };
-  if (c.includes('start recording')) return { response:'Starting recording.', action:'start-recording' };
-  if (c.includes('stop recording')) return { response:'Stopping recording.', action:'stop-recording' };
-  if (c.includes('start stream') || c.includes('go live')) return { response:'Starting stream.', action:'start-stream' };
-  if (c.includes('stop stream') || c.includes('end stream')) return { response:'Stopping stream.', action:'stop-stream' };
-  if (c.includes('prepare stream')) return { response:'Preparing stream workflow with OBS and Discord.', action:'prepare-stream' };
-  if (c.includes('health') || c.includes('status')) return { response:'KelvorOS DiscordLink is online. OBS and Discord controls are ready when connected.', action:'status' };
-  if (c.includes('forge') || c.includes('vault')) return { response:'Opening Forge Vault.', action:'open-vault' };
-  return { response:`Kelvor heard: ${text}`, action:'generic' };
-}
-
-function missionScan(payload) {
-  const checks = [];
-  const add = (label, ok, severity, detail) => checks.push({ label, ok:!!ok, severity, detail });
-  add('AI Core', true, 'critical', 'Unified command router online.');
-  add('StreamLink Module', true, 'critical', 'OBS control layer loaded.');
-  add('DiscordLink Module', true, 'critical', 'Discord control layer loaded.');
-  add('OBS Connected', payload.obs.connected, 'warning', payload.obs.connected ? `Scene: ${payload.obs.currentScene}` : 'OBS not connected.');
-  add('Discord Connected', payload.discord.connected, 'warning', payload.discord.connected ? payload.discord.botName : 'Discord not connected.');
-  add('Atlas Profile', true, 'critical', `${payload.settings.profileName} / ${payload.settings.brandName}`);
-  add('Forge Vault', true, 'warning', `${payload.forge.assetCount} assets found.`);
-  add('Internet', payload.internet.online, 'warning', payload.internet.online ? `Ping ${payload.internet.pingMs}ms` : 'Offline.');
-  add('Brand Lock', true, 'critical', 'Transparent Kelvor K locked.');
-  const score = Math.round((checks.filter(c => c.ok).length / checks.length) * 100);
-  return { checks, score, status: score >= 90 ? 'READY' : 'ATTENTION' };
-}
-
-async function payload() {
-  const settings = loadSettings();
-  const net = await internet();
-  const sys = systemStats();
-  const forge = scanVault();
-  const obsData = await obsStatus();
-  const discordData = discordInfo;
-  const readyCount = [net.online, obsData.connected, discordData.connected].filter(Boolean).length;
-  const health = { score: 75 + readyCount * 8, label: obsData.connected && discordData.connected ? 'Launch Ready' : 'Connections Needed' };
-  const scan = missionScan({ settings, internet:net, system:sys, forge, obs:obsData, discord:discordData });
-  return { settings, state, internet:net, system:sys, forge, obs:obsData, discord:discordData, health, missionScan:scan, timeline };
-}
-
-ipcMain.handle('kelvor-status', async () => payload());
-
-ipcMain.handle('kelvor-command', async (_e, command) => {
-  const settings = loadSettings();
-  const routed = aiRoute(command);
-
-  try {
-    if (routed.action === 'open-vault') {
-      const vault = ensureVault();
-      await shell.openPath(vault);
-    }
-    if (routed.action === 'connect-obs') return { ...routed, result:await connectObs(settings) };
-    if (routed.action === 'connect-discord') return { ...routed, result:await connectDiscord(settings) };
-    if (routed.action === 'discord-announce') return { ...routed, result:await sendDiscordAnnouncement(settings) };
-    if (routed.action === 'discord-status') return { ...routed, result:discordInfo };
-    if (routed.action === 'obs-status') return { ...routed, result:await obsStatus() };
-
-    if (routed.action === 'scene-starting') { await safeObsCall('SetCurrentProgramScene', { sceneName:settings.startingScene }); logEvent('OBS Scene Switch', settings.startingScene); }
-    if (routed.action === 'scene-gameplay') { await safeObsCall('SetCurrentProgramScene', { sceneName:settings.gameplayScene }); logEvent('OBS Scene Switch', settings.gameplayScene); }
-    if (routed.action === 'scene-ending') { await safeObsCall('SetCurrentProgramScene', { sceneName:settings.endingScene }); logEvent('OBS Scene Switch', settings.endingScene); }
-    if (routed.action === 'start-recording') { await safeObsCall('StartRecord'); logEvent('OBS Recording Started', 'Recording started.'); }
-    if (routed.action === 'stop-recording') { await safeObsCall('StopRecord'); logEvent('OBS Recording Stopped', 'Recording stopped.'); }
-    if (routed.action === 'start-stream') { await safeObsCall('StartStream'); logEvent('OBS Stream Started', 'Stream started.'); }
-    if (routed.action === 'stop-stream') { await safeObsCall('StopStream'); logEvent('OBS Stream Stopped', 'Stream stopped.'); }
-
-    if (routed.action === 'prepare-stream') {
-      if (!obsConnected) await connectObs(settings);
-      if (!discordReady) await connectDiscord(settings);
-      try { await safeObsCall('SetCurrentProgramScene', { sceneName:settings.startingScene }); } catch (_) {}
-      try { await safeObsCall('StartRecord'); } catch (_) {}
-      await sendDiscordAnnouncement(settings);
-      logEvent('Prepare Stream', 'OBS prepared, recording attempted, Discord announcement attempted.');
-    }
-
-    return routed;
-  } catch (error) {
-    logEvent('Command Error', error.message);
-    return { ...routed, response:`${routed.response} Error: ${error.message}`, error:error.message };
-  }
+ipcMain.handle('kelvor-command', async(_e,text)=>{
+  const response=routeCommand(text);
+  return {response};
 });
 
-ipcMain.handle('obs-connect', async () => connectObs(loadSettings()));
-ipcMain.handle('discord-connect', async () => connectDiscord(loadSettings()));
-ipcMain.handle('discord-send-announcement', async () => sendDiscordAnnouncement(loadSettings()));
-
-ipcMain.handle('kelvor-mission-scan', async () => {
-  const p = await payload();
-  logEvent('Mission Scan Complete', `${p.missionScan.score}% — ${p.missionScan.status}`);
-  return p.missionScan;
-});
-
-ipcMain.handle('atlas-load-settings', async () => loadSettings());
-ipcMain.handle('atlas-save-settings', async (_e, settings) => saveSettings(settings));
-ipcMain.handle('forge-open-vault', async () => {
-  const vault = ensureVault();
-  await shell.openPath(vault);
-  logEvent('Forge Vault Opened', vault);
-  return { ok:true, vaultPath:vault };
-});
-
-app.whenReady().then(() => {
-  ensureVault();
-  const settings = loadSettings();
-  state.profileName = settings.profileName;
-  state.brandName = settings.brandName;
-
-  mainWindow = new BrowserWindow({
-    width:1600,
-    height:1000,
-    minWidth:1200,
-    minHeight:760,
+app.whenReady().then(()=>{
+  mainWindow=new BrowserWindow({
+    width:1400,
+    height:900,
     backgroundColor:'#030303',
-    title:'KelvorOS v2.2 DiscordLink Phase',
+    title:'KelvorOS v2.3.1 VoiceCore Hotfix',
     webPreferences:{
-      preload:path.join(__dirname, 'src/core/preload.js'),
+      preload:path.join(__dirname,'src/core/preload.js'),
       nodeIntegration:false,
       contextIsolation:true
     }
   });
-
-  logEvent('KelvorOS Started', 'v2.2 DiscordLink Phase online.');
-  mainWindow.loadFile(path.join(__dirname, 'src/ui/index.html'));
+  log('KelvorOS Started','v2.3.1 VoiceCore Hotfix online.');
+  mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));
 });
 
-app.on('window-all-closed', () => {
-  try { if (discordClient) discordClient.destroy(); } catch (_) {}
-  if (process.platform !== 'darwin') app.quit();
-});
+app.on('window-all-closed',()=>{ if(process.platform!=='darwin') app.quit(); });

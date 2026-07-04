@@ -1,16 +1,14 @@
 {
   "name": "kelvor-os",
-  "version": "2.2.0-discordlink",
-  "description": "KelvorOS v2.2 DiscordLink Phase - Discord connection and announcements",
-  "main": "main.js",
+  "version": "2.3.1-voicecore-hotfix",
   "private": true,
+  "description": "KelvorOS v2.3.1 VoiceCore Hotfix - runnable Electron app",
+  "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron ."
   },
   "dependencies": {
-    "electron": "^31.0.0",
-    "obs-websocket-js": "^5.0.6",
-    "discord.js": "^14.15.3"
+    "electron": "^31.0.0"
   }
 }
