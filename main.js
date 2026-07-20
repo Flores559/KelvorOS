@@ -55,5 +55,5 @@ ipcMain.handle('atlas-load-settings',async()=>loadSettings());
 ipcMain.handle('atlas-save-settings',async(_e,s)=>saveSettings(s));
 ipcMain.handle('forge-open-vault',async()=>{const v=vaultPath();await shell.openPath(v);logEvent('Creator Vault Opened',v);return{ok:true,vaultPath:v};});
 
-app.whenReady().then(()=>{vaultPath();mainWindow=new BrowserWindow({width:1600,height:1000,minWidth:1200,minHeight:760,backgroundColor:'#030303',title:'KelvorOS v2.5 Creator Dashboard',webPreferences:{preload:path.join(__dirname,'src/core/preload.js'),nodeIntegration:false,contextIsolation:true}});logEvent('KelvorOS Started','v2.5 Creator Dashboard online.');mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));});
+app.whenReady().then(()=>{vaultPath();mainWindow=new BrowserWindow({width:1600,height:1000,minWidth:1200,minHeight:760,backgroundColor:'#030303',title:'KelvorOS v2.5.1 Creator Dashboard',webPreferences:{preload:path.join(__dirname,'src/core/preload.js'),nodeIntegration:false,contextIsolation:true}});logEvent('KelvorOS Started','v2.5.1 Creator Dashboard online.');mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));});
 app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit();});

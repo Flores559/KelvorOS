@@ -1,6 +1,6 @@
 # Changelog
 
-## v2.5 Creator Dashboard
+## v2.5.1 Creator Dashboard
 - Added creator dashboard
 - Added task board
 - Added idea bank
