@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "2.5.1-creator-dashboard-logo-patch",
-  "description": "KelvorOS v2.5.1 Creator Dashboard - official Kelvor logo patch",
+  "version": "2.6.0-voice-provider",
+  "description": "KelvorOS v2.6 Voice Provider - microphone input and speech-to-text command routing",
   "main": "main.js",
   "private": true,
   "scripts": {

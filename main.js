@@ -1,9 +1,18 @@
 
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, session } = require('electron');
 const path = require('path');
 const fs = require('fs');
 let mainWindow;
 let timeline=[];
+let voiceState={
+  provider:'WEB_SPEECH',
+  microphonePermission:'UNKNOWN',
+  recognitionSupport:'RENDERER_CHECK',
+  mode:'PUSH_TO_TALK',
+  listening:false,
+  lastTranscript:'None',
+  lastError:'None'
+};
 
 function ensureDir(d){fs.mkdirSync(d,{recursive:true});return d;}
 function dataDir(){return ensureDir(path.join(app.getPath('userData'),'creator-dashboard'));}
@@ -55,5 +64,19 @@ ipcMain.handle('atlas-load-settings',async()=>loadSettings());
 ipcMain.handle('atlas-save-settings',async(_e,s)=>saveSettings(s));
 ipcMain.handle('forge-open-vault',async()=>{const v=vaultPath();await shell.openPath(v);logEvent('Creator Vault Opened',v);return{ok:true,vaultPath:v};});
 
-app.whenReady().then(()=>{vaultPath();mainWindow=new BrowserWindow({width:1600,height:1000,minWidth:1200,minHeight:760,backgroundColor:'#030303',title:'KelvorOS v2.5.1 Creator Dashboard',webPreferences:{preload:path.join(__dirname,'src/core/preload.js'),nodeIntegration:false,contextIsolation:true}});logEvent('KelvorOS Started','v2.5.1 Creator Dashboard online.');mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));});
+
+ipcMain.handle('voice-provider-status', async () => ({...voiceState}));
+ipcMain.handle('voice-provider-update', async (_e, patch={}) => {
+  voiceState={...voiceState,...patch};
+  logEvent('Voice Provider Update', JSON.stringify(patch));
+  return {...voiceState};
+});
+
+app.whenReady().then(()=>{
+session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+  const allowed = permission === 'media' || permission === 'microphone';
+  if (allowed) voiceState.microphonePermission='GRANTED';
+  callback(allowed);
+});
+vaultPath();mainWindow=new BrowserWindow({width:1600,height:1000,minWidth:1200,minHeight:760,backgroundColor:'#030303',title:'KelvorOS v2.6 Voice Provider',webPreferences:{preload:path.join(__dirname,'src/core/preload.js'),nodeIntegration:false,contextIsolation:true}});logEvent('KelvorOS Started','v2.6 Voice Provider online.');mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));});
 app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit();});
