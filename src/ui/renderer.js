@@ -223,3 +223,17 @@ if (testVoiceButton) {
     );
   });
 }
+const testVoiceBtn = document.getElementById("testVoiceBtn");
+
+if (testVoiceBtn) {
+  testVoiceBtn.addEventListener("click", async () => {
+    try {
+      const result = await window.kelvor.launchApp("github");
+      console.log("Launch result:", result);
+    } catch (error) {
+      console.error("Could not launch GitHub:", error);
+    }
+  });
+} else {
+  console.warn("testVoiceBtn was not found.");
+}

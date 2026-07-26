@@ -1,3 +1,4 @@
+const { launchApp } = require("./src/core/appLauncher");
 const {
   app,
   BrowserWindow,
@@ -70,6 +71,25 @@ ipcMain.handle('dashboard-add-post',async(_e,p)=>addPost(p.platform,p.caption));
 ipcMain.handle('atlas-load-settings',async()=>loadSettings());
 ipcMain.handle('atlas-save-settings',async(_e,s)=>saveSettings(s));
 ipcMain.handle('forge-open-vault',async()=>{const v=vaultPath();await shell.openPath(v);logEvent('Creator Vault Opened',v);return{ok:true,vaultPath:v};});
+ipcMain.handle("launch-app", async (_event, appName) => {
+  try {
+    launchApp(appName);
+
+    logEvent("Application Launched", appName);
+
+    return {
+      success: true,
+      app: appName,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+});
 
 
 ipcMain.handle('voice-provider-status', async () => ({...voiceState}));
