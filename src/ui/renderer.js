@@ -186,3 +186,40 @@ if (talkButton) {
     stopListening
   );
 }
+const testVoiceButton =
+  document.getElementById("test-voice-button");
+
+function speakKelvor(message) {
+  if (!window.speechSynthesis) {
+    console.error("Speech synthesis is unavailable.");
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+
+  const speech = new SpeechSynthesisUtterance(message);
+
+  speech.rate = 0.95;
+  speech.pitch = 0.85;
+  speech.volume = 1;
+
+  const voices = window.speechSynthesis.getVoices();
+
+  const preferredVoice = voices.find((voice) =>
+    voice.lang.startsWith("en")
+  );
+
+  if (preferredVoice) {
+    speech.voice = preferredVoice;
+  }
+
+  window.speechSynthesis.speak(speech);
+}
+
+if (testVoiceButton) {
+  testVoiceButton.addEventListener("click", () => {
+    speakKelvor(
+      "Welcome back, JD. Kelvor Voice Core is online."
+    );
+  });
+}
