@@ -156,14 +156,29 @@
       </section>
 
       <section class="view" id="voice-view">
-        <div class="empty-state">
-          <h3>Voice Provider</h3>
-          <p>
-            Microphone controls and voice-selection tools will be connected
-            in the next v2.7 build step.
-          </p>
-        </div>
-      </section>
+  <div class="voice-panel">
+    <p class="eyebrow">Kelvor Voice Core</p>
+    <h3>Push to Talk</h3>
+
+    <div
+      id="voice-orb"
+      class="voice-orb"
+      aria-label="Microphone status"
+    >
+      <span>🎙️</span>
+    </div>
+
+    <p id="voice-status">Microphone standby</p>
+
+    <button id="talk-button" type="button">
+      Hold to Talk
+    </button>
+
+    <div class="voice-meter">
+      <div id="voice-level"></div>
+    </div>
+  </div>
+</section>
 
       <section class="view" id="commands-view">
         <div class="empty-state">

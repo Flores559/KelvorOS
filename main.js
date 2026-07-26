@@ -1,6 +1,13 @@
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  session,
+  shell,
+  systemPreferences,
+} = require("electron");
 
-const { app, BrowserWindow, ipcMain, shell, session } = require('electron');
-const path = require('path');
+const path = require("path");
 const fs = require('fs');
 let mainWindow;
 let timeline=[];
@@ -71,12 +78,98 @@ ipcMain.handle('voice-provider-update', async (_e, patch={}) => {
   logEvent('Voice Provider Update', JSON.stringify(patch));
   return {...voiceState};
 });
+async function configureMicrophoneAccess() {
+  session.defaultSession.setPermissionRequestHandler(
+    (_webContents, permission, callback) => {
+      const allowed =
+        permission === "media" ||
+        permission === "microphone";
 
-app.whenReady().then(()=>{
-session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
-  const allowed = permission === 'media' || permission === 'microphone';
-  if (allowed) voiceState.microphonePermission='GRANTED';
-  callback(allowed);
+      voiceState.microphonePermission = allowed
+        ? "GRANTED"
+        : "DENIED";
+
+      callback(allowed);
+    }
+  );
+
+  if (process.platform === "darwin") {
+    try {
+      const granted =
+        await systemPreferences.askForMediaAccess(
+          "microphone"
+        );
+
+      voiceState.microphonePermission = granted
+        ? "GRANTED"
+        : "DENIED";
+
+      console.log(
+        granted
+          ? "Kelvor microphone permission granted."
+          : "Kelvor microphone permission denied."
+      );
+    } catch (error) {
+      voiceState.microphonePermission = "ERROR";
+      voiceState.lastError = error.message;
+
+      console.error(
+        "Microphone permission error:",
+        error
+      );
+    }
+  }
+}
+
+function createWindow() {
+  vaultPath();
+
+  mainWindow = new BrowserWindow({
+    width: 1600,
+    height: 1000,
+    minWidth: 1200,
+    minHeight: 760,
+    backgroundColor: "#030303",
+    title: "KelvorOS v2.8 Voice Core",
+
+    webPreferences: {
+      preload: path.join(
+        __dirname,
+        "src/core/preload.js"
+      ),
+      nodeIntegration: false,
+      contextIsolation: true,
+    },
+  });
+
+  mainWindow.loadFile(
+    path.join(__dirname, "src/ui/index.html")
+  );
+  mainWindow.webContents.openDevTools();
+
+  logEvent(
+    "KelvorOS Started",
+    "v2.8 Voice Core online."
+  );
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
+}
+
+app.whenReady().then(async () => {
+  await configureMicrophoneAccess();
+  createWindow();
+
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
 });
-vaultPath();mainWindow=new BrowserWindow({width:1600,height:1000,minWidth:1200,minHeight:760,backgroundColor:'#030303',title:'KelvorOS v2.6 Voice Provider',webPreferences:{preload:path.join(__dirname,'src/core/preload.js'),nodeIntegration:false,contextIsolation:true}});logEvent('KelvorOS Started','v2.6 Voice Provider online.');mainWindow.loadFile(path.join(__dirname,'src/ui/index.html'));});
-app.on('window-all-closed',()=>{if(process.platform!=='darwin')app.quit();});
+
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
