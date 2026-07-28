@@ -1,54 +1,33 @@
-const { exec } = require("child_process");
+const { execFile, spawn } = require("child_process");
 
-const APPS = {
-  github: {
-    darwin: "GitHub Desktop",
-    win32: "%LocalAppData%\\GitHubDesktop\\GitHubDesktop.exe",
-  },
-
-  vscode: {
-    darwin: "Visual Studio Code",
-    win32: "%LocalAppData%\\Programs\\Microsoft VS Code\\Code.exe",
-  },
-
-  discord: {
-    darwin: "Discord",
-    win32: "%LocalAppData%\\Discord\\Update.exe --processStart Discord.exe",
-  },
-
-  obs: {
-    darwin: "OBS",
-    win32: "obs64.exe",
-  },
-
-  plex: {
-    darwin: "Plex",
-    win32: "Plex.exe",
-  },
+const MAC_APPS = { github: "GitHub Desktop", vscode: "Visual Studio Code", discord: "Discord", obs: "OBS", plex: "Plex" };
+const WINDOWS_COMMANDS = {
+  github: ["cmd", ["/c", "start", "", "%LocalAppData%\\GitHubDesktop\\GitHubDesktop.exe"]],
+  vscode: ["cmd", ["/c", "start", "", "%LocalAppData%\\Programs\\Microsoft VS Code\\Code.exe"]],
+  discord: ["cmd", ["/c", "start", "", "%LocalAppData%\\Discord\\Update.exe", "--processStart", "Discord.exe"]],
+  obs: ["cmd", ["/c", "start", "", "obs64.exe"]],
+  plex: ["cmd", ["/c", "start", "", "Plex.exe"]],
 };
 
 function launchApp(appName) {
-  const app = APPS[appName];
-
-  if (!app) {
-    throw new Error(`Unknown app: ${appName}`);
-  }
-
-  if (process.platform === "darwin") {
-    exec(`open -a "${app.darwin}"`);
-    return;
-  }
-
-  if (process.platform === "win32") {
-    exec(`start "" "${app.win32}"`, {
-      shell: true,
-    });
-    return;
-  }
-
-  throw new Error("Unsupported operating system.");
+  return new Promise((resolve, reject) => {
+    if (process.platform === "darwin") {
+      const app = MAC_APPS[appName];
+      if (!app) return reject(new Error(`Unknown app: ${appName}`));
+      execFile("open", ["-a", app], (error) => error ? reject(error) : resolve());
+      return;
+    }
+    if (process.platform === "win32") {
+      const command = WINDOWS_COMMANDS[appName];
+      if (!command) return reject(new Error(`Unknown app: ${appName}`));
+      const child = spawn(command[0], command[1], { detached: true, windowsHide: true, shell: false });
+      child.on("error", reject);
+      child.unref();
+      resolve();
+      return;
+    }
+    reject(new Error("Unsupported operating system."));
+  });
 }
 
-module.exports = {
-  launchApp,
-};
+module.exports = { launchApp };

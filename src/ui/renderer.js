@@ -1,239 +1,79 @@
-console.log("Kelvor renderer loaded.");
-
+console.log("Kelvor v3.1 renderer loaded.");
 const navButtons = document.querySelectorAll(".nav-button");
 const views = document.querySelectorAll(".view");
-
-console.log("Navigation buttons found:", navButtons.length);
-console.log("Views found:", views.length);
-
-function showView(viewName) {
-  navButtons.forEach((button) => {
-    button.classList.remove("active");
-
-    if (button.dataset.view === viewName) {
-      button.classList.add("active");
-    }
-  });
-
-  views.forEach((view) => {
-    view.classList.remove("active");
-
-    if (view.id === `${viewName}-view`) {
-      view.classList.add("active");
-    }
-  });
-}
-
-navButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const viewName = button.dataset.view;
-
-    console.log("Opening view:", viewName);
-    showView(viewName);
-  });
-});
 const talkButton = document.getElementById("talk-button");
 const voiceOrb = document.getElementById("voice-orb");
 const voiceStatus = document.getElementById("voice-status");
 const voiceLevel = document.getElementById("voice-level");
-
-let microphoneStream = null;
-let audioContext = null;
-let analyser = null;
-let animationFrame = null;
+const testVoiceButton = document.getElementById("test-voice-button");
 let isListening = false;
 
-async function startListening() {
-  if (isListening || !talkButton) return;
+navButtons.forEach((button) => button.addEventListener("click", () => {
+  navButtons.forEach((item) => item.classList.toggle("active", item === button));
+  views.forEach((view) => view.classList.toggle("active", view.id === `${button.dataset.view}-view`));
+}));
 
+function speakKelvor(message) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const speech = new SpeechSynthesisUtterance(message);
+  speech.rate = 0.95; speech.pitch = 0.85; speech.volume = 1;
+  const voice = window.speechSynthesis.getVoices().find((item) => item.lang.startsWith("en"));
+  if (voice) speech.voice = voice;
+  window.speechSynthesis.speak(speech);
+}
+
+const recorder = new window.AudioRecorder({ onLevel: (level) => { if (voiceLevel) voiceLevel.style.width = `${level}%`; } });
+
+async function startListening() {
+  if (isListening) return;
   try {
     isListening = true;
-
-    microphoneStream =
-      await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
-
-    audioContext = new AudioContext();
-
-    const source =
-      audioContext.createMediaStreamSource(
-        microphoneStream
-      );
-
-    analyser = audioContext.createAnalyser();
-    analyser.fftSize = 256;
-
-    source.connect(analyser);
-
-    const audioData = new Uint8Array(
-      analyser.frequencyBinCount
-    );
-
+    await recorder.start();
     voiceOrb?.classList.add("listening");
-    talkButton.classList.add("active");
-    talkButton.textContent = "Listening…";
-
-    if (voiceStatus) {
-      voiceStatus.textContent =
-        "Kelvor is listening";
-    }
-
-    function updateVoiceMeter() {
-      if (!analyser || !isListening) return;
-
-      analyser.getByteFrequencyData(audioData);
-
-      const average =
-        audioData.reduce(
-          (total, value) => total + value,
-          0
-        ) / audioData.length;
-
-      const percentage =
-        Math.min(average * 2.5, 100);
-
-      if (voiceLevel) {
-        voiceLevel.style.width =
-          `${percentage}%`;
-      }
-
-      animationFrame =
-        requestAnimationFrame(
-          updateVoiceMeter
-        );
-    }
-
-    updateVoiceMeter();
+    talkButton?.classList.add("active");
+    if (talkButton) talkButton.textContent = "Listening…";
+    if (voiceStatus) voiceStatus.textContent = "Kelvor is listening";
   } catch (error) {
-    console.error(
-      "Microphone error:",
-      error
-    );
-
     isListening = false;
-
-    if (voiceStatus) {
-      voiceStatus.textContent =
-        "Microphone unavailable";
-    }
-
-    if (talkButton) {
-      talkButton.textContent =
-        "Hold to Talk";
-      talkButton.classList.remove("active");
-    }
-
-    voiceOrb?.classList.remove("listening");
+    if (voiceStatus) voiceStatus.textContent = `Microphone error: ${error.message}`;
   }
 }
 
-function stopListening() {
+async function stopListening() {
   if (!isListening) return;
-
   isListening = false;
-
-  if (animationFrame) {
-    cancelAnimationFrame(animationFrame);
-    animationFrame = null;
-  }
-
-  if (microphoneStream) {
-    microphoneStream
-      .getTracks()
-      .forEach((track) => track.stop());
-
-    microphoneStream = null;
-  }
-
-  if (audioContext) {
-    audioContext.close();
-    audioContext = null;
-  }
-
-  analyser = null;
-
-  if (voiceLevel) {
-    voiceLevel.style.width = "0%";
-  }
-
   voiceOrb?.classList.remove("listening");
-
-  if (talkButton) {
-    talkButton.classList.remove("active");
-    talkButton.textContent = "Hold to Talk";
-  }
-
-  if (voiceStatus) {
-    voiceStatus.textContent =
-      "Microphone standby";
+  talkButton?.classList.remove("active");
+  if (talkButton) { talkButton.textContent = "Processing…"; talkButton.disabled = true; }
+  if (voiceStatus) voiceStatus.textContent = "Whisper is transcribing…";
+  try {
+    const wavBytes = await recorder.stop();
+    if (!wavBytes || wavBytes.length < 1000) throw new Error("Recording was too short");
+    const result = await window.kelvor.transcribeAudio(wavBytes);
+    if (!result.success) throw new Error(result.error || "Transcription failed");
+    const transcript = result.transcript;
+    if (result.commandResult?.success) {
+      voiceStatus.textContent = `Heard: “${transcript}” — Opening ${result.commandResult.app}`;
+      speakKelvor(`Opening ${result.commandResult.app}`);
+    } else {
+      voiceStatus.textContent = `Heard: “${transcript}” — Command not recognized`;
+      speakKelvor("I heard you, but I did not recognize that command.");
+    }
+  } catch (error) {
+    console.error(error);
+    if (voiceStatus) voiceStatus.textContent = `Voice error: ${error.message}`;
+    speakKelvor("The voice command could not be completed.");
+  } finally {
+    if (talkButton) { talkButton.textContent = "Hold to Talk"; talkButton.disabled = false; }
   }
 }
 
 if (talkButton) {
-  talkButton.addEventListener(
-    "mousedown",
-    startListening
-  );
-
-  talkButton.addEventListener(
-    "mouseup",
-    stopListening
-  );
-
-  talkButton.addEventListener(
-    "mouseleave",
-    stopListening
-  );
+  talkButton.addEventListener("mousedown", startListening);
+  talkButton.addEventListener("mouseup", stopListening);
+  talkButton.addEventListener("mouseleave", stopListening);
+  talkButton.addEventListener("touchstart", (event) => { event.preventDefault(); startListening(); }, { passive: false });
+  talkButton.addEventListener("touchend", (event) => { event.preventDefault(); stopListening(); }, { passive: false });
 }
-const testVoiceButton =
-  document.getElementById("test-voice-button");
-
-function speakKelvor(message) {
-  if (!window.speechSynthesis) {
-    console.error("Speech synthesis is unavailable.");
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
-  const speech = new SpeechSynthesisUtterance(message);
-
-  speech.rate = 0.95;
-  speech.pitch = 0.85;
-  speech.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-
-  const preferredVoice = voices.find((voice) =>
-    voice.lang.startsWith("en")
-  );
-
-  if (preferredVoice) {
-    speech.voice = preferredVoice;
-  }
-
-  window.speechSynthesis.speak(speech);
-}
-
-if (testVoiceButton) {
-  testVoiceButton.addEventListener("click", () => {
-    speakKelvor(
-      "Welcome back, JD. Kelvor Voice Core is online."
-    );
-  });
-}
-const testVoiceBtn = document.getElementById("testVoiceBtn");
-
-if (testVoiceBtn) {
-  testVoiceBtn.addEventListener("click", async () => {
-    try {
-      const result = await window.kelvor.launchApp("github");
-      console.log("Launch result:", result);
-    } catch (error) {
-      console.error("Could not launch GitHub:", error);
-    }
-  });
-} else {
-  console.warn("testVoiceBtn was not found.");
-}
+if (testVoiceButton) testVoiceButton.addEventListener("click", () => speakKelvor("Welcome back, JD. Kelvor Voice Core is online."));

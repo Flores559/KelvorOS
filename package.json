@@ -1,7 +1,7 @@
 {
   "name": "kelvor-os",
-  "version": "2.6.0-voice-provider",
-  "description": "KelvorOS v2.6 Voice Provider - microphone input and speech-to-text command routing",
+  "version": "3.1.0",
+  "description": "KelvorOS v3.1 Audio Engine with local Whisper voice commands",
   "main": "main.js",
   "private": true,
   "scripts": {
