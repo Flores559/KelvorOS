@@ -32,17 +32,14 @@ body{
     gap:15px;
 }
 
-.brand-mark{
-    width:55px;
-    height:55px;
-    border-radius:14px;
-    background:#d90429;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:28px;
-    font-weight:bold;
-    box-shadow:0 0 20px rgba(217,4,41,.55);
+.brand-logo {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 40, 40, 0.8))
+    drop-shadow(0 0 18px rgba(255, 0, 0, 0.35));
 }
 
 .brand h1{
@@ -369,4 +366,44 @@ button{
 
 #test-voice-button:hover {
   background: rgba(217, 4, 41, 0.18);
+}
+/* Kelvor branding header */
+
+.kelvor-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 45, 45, 0.28);
+  background:
+    radial-gradient(
+      circle at left,
+      rgba(255, 0, 0, 0.13),
+      transparent 42%
+    ),
+    rgba(8, 8, 10, 0.92);
+}
+
+.kelvor-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 8px rgba(255, 25, 25, 0.75))
+    drop-shadow(0 0 18px rgba(255, 0, 0, 0.35));
+}
+
+.kelvor-brand h1 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 28px;
+  letter-spacing: 7px;
+}
+
+.kelvor-brand p {
+  margin: 5px 0 0;
+  color: #e02b2b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
 }
