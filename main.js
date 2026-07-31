@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, session, shell, systemPreferences } = requi
 const path = require("path");
 const fs = require("fs");
 const { registerVoiceIPC } = require("./src/ipc/voiceIPC");
+const {getLiveSystemInfo} = require("./src/core/systemMonitor")
 const { spawn } = require("child_process");
 
 let mainWindow;
@@ -19,6 +20,9 @@ function posts() { return readJson("posts.json", []); }
 function payload() { return { health: { score: 100, label: "Audio Engine Ready" }, dashboard: { tasks: tasks(), ideas: ideas(), posts: posts() }, timeline }; }
 
 ipcMain.handle("kelvor-status", async () => payload());
+ipcMain.handle("kelvor-live-system", async () => {
+  return getLiveSystemInfo();
+});
 
 ipcMain.handle("kelvor-command", async (_event, command = "") => ({
   response: command

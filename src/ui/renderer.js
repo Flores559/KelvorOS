@@ -1,4 +1,4 @@
-console.log("Kelvor v3.2 renderer loaded.");
+console.log("Kelvor v3.4 renderer loaded.");
 
 // ============================================================
 // ELEMENTS
@@ -20,8 +20,11 @@ const voiceStatus = document.getElementById("voice-status");
 const voiceOrb = document.getElementById("voice-orb");
 const voiceLevel = document.getElementById("voice-level");
 
-const sidebarTestVoiceButton = document.getElementById("testVoiceBtn");
-const voicePageTestButton = document.getElementById("test-voice-button");
+const sidebarTestVoiceButton =
+  document.getElementById("testVoiceBtn");
+
+const voicePageTestButton =
+  document.getElementById("test-voice-button");
 
 let executedCommandCount = 0;
 let isRecording = false;
@@ -50,7 +53,8 @@ navButtons.forEach((button) => {
 
     button.classList.add("active");
 
-    const selectedView = document.getElementById(`${targetView}-view`);
+    const selectedView =
+      document.getElementById(`${targetView}-view`);
 
     if (selectedView) {
       selectedView.classList.add("active");
@@ -104,7 +108,8 @@ if (clearLogButton) {
 
 function updateCommandCount() {
   if (commandCount) {
-    commandCount.textContent = String(executedCommandCount);
+    commandCount.textContent =
+      String(executedCommandCount);
   }
 }
 
@@ -128,7 +133,10 @@ function getResultMessage(result, fallbackMessage) {
   return fallbackMessage;
 }
 
-async function executeCommand(commandText, source = "typed") {
+async function executeCommand(
+  commandText,
+  source = "typed"
+) {
   const command = commandText.trim();
 
   if (!command) {
@@ -136,12 +144,14 @@ async function executeCommand(commandText, source = "typed") {
   }
 
   if (!window.kelvor?.command) {
-    const message = "Kelvor command bridge is unavailable.";
+    const message =
+      "Kelvor command bridge is unavailable.";
 
     console.error(message);
 
     if (commandStatus) {
-      commandStatus.textContent = "Command unavailable";
+      commandStatus.textContent =
+        "Command unavailable";
     }
 
     addLogEntry(message, "error");
@@ -158,7 +168,8 @@ async function executeCommand(commandText, source = "typed") {
       "command"
     );
 
-    const result = await window.kelvor.command(command);
+    const result =
+      await window.kelvor.command(command);
 
     executedCommandCount += 1;
     updateCommandCount();
@@ -174,43 +185,58 @@ async function executeCommand(commandText, source = "typed") {
 
     addLogEntry(resultMessage, "success");
 
-    speak(`Command completed.`);
+    speak("Command completed.");
   } catch (error) {
-    console.error("Kelvor command error:", error);
+    console.error(
+      "Kelvor command error:",
+      error
+    );
 
     const errorMessage =
-      error?.message || "Kelvor could not complete the command.";
+      error?.message ||
+      "Kelvor could not complete the command.";
 
     if (commandStatus) {
-      commandStatus.textContent = "Command failed";
+      commandStatus.textContent =
+        "Command failed";
     }
 
     addLogEntry(errorMessage, "error");
 
-    speak("I could not complete that command.");
+    speak(
+      "I could not complete that command."
+    );
   }
 }
 
 if (commandForm) {
-  commandForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
+  commandForm.addEventListener(
+    "submit",
+    async (event) => {
+      event.preventDefault();
 
-    const command = commandInput?.value || "";
+      const command =
+        commandInput?.value || "";
 
-    if (!command.trim()) {
-      if (commandStatus) {
-        commandStatus.textContent = "Enter a command";
+      if (!command.trim()) {
+        if (commandStatus) {
+          commandStatus.textContent =
+            "Enter a command";
+        }
+
+        return;
       }
 
-      return;
-    }
+      if (commandInput) {
+        commandInput.value = "";
+      }
 
-    if (commandInput) {
-      commandInput.value = "";
+      await executeCommand(
+        command,
+        "typed"
+      );
     }
-
-    await executeCommand(command, "typed");
-  });
+  );
 }
 
 // ============================================================
@@ -219,29 +245,40 @@ if (commandForm) {
 
 function speak(message) {
   if (!("speechSynthesis" in window)) {
-    console.warn("Speech synthesis is unavailable.");
+    console.warn(
+      "Speech synthesis is unavailable."
+    );
+
     return;
   }
 
   window.speechSynthesis.cancel();
 
-  const speech = new SpeechSynthesisUtterance(message);
+  const speech =
+    new SpeechSynthesisUtterance(message);
 
   speech.rate = 0.95;
   speech.pitch = 0.85;
   speech.volume = 1;
 
-  const availableVoices = window.speechSynthesis.getVoices();
+  const availableVoices =
+    window.speechSynthesis.getVoices();
 
   const preferredVoice =
     availableVoices.find((voice) =>
-      voice.name.toLowerCase().includes("daniel")
+      voice.name
+        .toLowerCase()
+        .includes("daniel")
     ) ||
     availableVoices.find((voice) =>
-      voice.name.toLowerCase().includes("alex")
+      voice.name
+        .toLowerCase()
+        .includes("alex")
     ) ||
     availableVoices.find((voice) =>
-      voice.lang.toLowerCase().startsWith("en")
+      voice.lang
+        .toLowerCase()
+        .startsWith("en")
     );
 
   if (preferredVoice) {
@@ -252,17 +289,28 @@ function speak(message) {
 }
 
 function testKelvorVoice() {
-  speak("Voice systems online. Welcome back, JD.");
+  speak(
+    "Voice systems online. Welcome back, JD."
+  );
 
-  addLogEntry("Kelvor voice test completed.", "success");
+  addLogEntry(
+    "Kelvor voice test completed.",
+    "success"
+  );
 }
 
 if (sidebarTestVoiceButton) {
-  sidebarTestVoiceButton.addEventListener("click", testKelvorVoice);
+  sidebarTestVoiceButton.addEventListener(
+    "click",
+    testKelvorVoice
+  );
 }
 
 if (voicePageTestButton) {
-  voicePageTestButton.addEventListener("click", testKelvorVoice);
+  voicePageTestButton.addEventListener(
+    "click",
+    testKelvorVoice
+  );
 }
 
 // ============================================================
@@ -288,17 +336,22 @@ function setVoiceState(state, message) {
   }
 
   if (talkButton) {
-    talkButton.classList.toggle("recording", state === "listening");
+    talkButton.classList.toggle(
+      "recording",
+      state === "listening"
+    );
   }
 }
 
 function mergeAudioChunks(chunks) {
   const totalLength = chunks.reduce(
-    (length, chunk) => length + chunk.length,
+    (length, chunk) =>
+      length + chunk.length,
     0
   );
 
-  const mergedAudio = new Float32Array(totalLength);
+  const mergedAudio =
+    new Float32Array(totalLength);
 
   let offset = 0;
 
@@ -310,61 +363,118 @@ function mergeAudioChunks(chunks) {
   return mergedAudio;
 }
 
-function resampleAudio(audioData, originalSampleRate, targetSampleRate) {
-  if (originalSampleRate === targetSampleRate) {
+function resampleAudio(
+  audioData,
+  originalSampleRate,
+  targetSampleRate
+) {
+  if (
+    originalSampleRate ===
+    targetSampleRate
+  ) {
     return audioData;
   }
 
-  const sampleRateRatio = originalSampleRate / targetSampleRate;
-  const newLength = Math.round(audioData.length / sampleRateRatio);
+  const sampleRateRatio =
+    originalSampleRate /
+    targetSampleRate;
 
-  const resampledAudio = new Float32Array(newLength);
+  const newLength = Math.round(
+    audioData.length /
+    sampleRateRatio
+  );
+
+  const resampledAudio =
+    new Float32Array(newLength);
 
   let originalOffset = 0;
 
-  for (let index = 0; index < newLength; index += 1) {
-    const nextOriginalOffset = Math.round(
-      (index + 1) * sampleRateRatio
-    );
+  for (
+    let index = 0;
+    index < newLength;
+    index += 1
+  ) {
+    const nextOriginalOffset =
+      Math.round(
+        (index + 1) *
+        sampleRateRatio
+      );
 
     let total = 0;
     let count = 0;
 
     for (
-      let sampleIndex = originalOffset;
-      sampleIndex < nextOriginalOffset &&
-      sampleIndex < audioData.length;
+      let sampleIndex =
+        originalOffset;
+
+      sampleIndex <
+        nextOriginalOffset &&
+      sampleIndex <
+        audioData.length;
+
       sampleIndex += 1
     ) {
-      total += audioData[sampleIndex];
+      total +=
+        audioData[sampleIndex];
+
       count += 1;
     }
 
-    resampledAudio[index] = count > 0 ? total / count : 0;
-    originalOffset = nextOriginalOffset;
+    resampledAudio[index] =
+      count > 0
+        ? total / count
+        : 0;
+
+    originalOffset =
+      nextOriginalOffset;
   }
 
   return resampledAudio;
 }
 
-function writeText(dataView, offset, text) {
-  for (let index = 0; index < text.length; index += 1) {
-    dataView.setUint8(offset + index, text.charCodeAt(index));
+function writeText(
+  dataView,
+  offset,
+  text
+) {
+  for (
+    let index = 0;
+    index < text.length;
+    index += 1
+  ) {
+    dataView.setUint8(
+      offset + index,
+      text.charCodeAt(index)
+    );
   }
 }
 
-function encodeWav(audioData, sampleRate = 16000) {
+function encodeWav(
+  audioData,
+  sampleRate = 16000
+) {
   const bytesPerSample = 2;
   const wavHeaderSize = 44;
 
-  const buffer = new ArrayBuffer(
-    wavHeaderSize + audioData.length * bytesPerSample
-  );
+  const buffer =
+    new ArrayBuffer(
+      wavHeaderSize +
+      audioData.length *
+      bytesPerSample
+    );
 
-  const view = new DataView(buffer);
+  const view =
+    new DataView(buffer);
 
   writeText(view, 0, "RIFF");
-  view.setUint32(4, 36 + audioData.length * bytesPerSample, true);
+
+  view.setUint32(
+    4,
+    36 +
+      audioData.length *
+      bytesPerSample,
+    true
+  );
 
   writeText(view, 8, "WAVE");
   writeText(view, 12, "fmt ");
@@ -372,25 +482,62 @@ function encodeWav(audioData, sampleRate = 16000) {
   view.setUint32(16, 16, true);
   view.setUint16(20, 1, true);
   view.setUint16(22, 1, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * bytesPerSample, true);
-  view.setUint16(32, bytesPerSample, true);
+
+  view.setUint32(
+    24,
+    sampleRate,
+    true
+  );
+
+  view.setUint32(
+    28,
+    sampleRate *
+      bytesPerSample,
+    true
+  );
+
+  view.setUint16(
+    32,
+    bytesPerSample,
+    true
+  );
+
   view.setUint16(34, 16, true);
 
   writeText(view, 36, "data");
-  view.setUint32(40, audioData.length * bytesPerSample, true);
+
+  view.setUint32(
+    40,
+    audioData.length *
+      bytesPerSample,
+    true
+  );
 
   let offset = wavHeaderSize;
 
-  for (let index = 0; index < audioData.length; index += 1) {
-    const sample = Math.max(-1, Math.min(1, audioData[index]));
+  for (
+    let index = 0;
+    index < audioData.length;
+    index += 1
+  ) {
+    const sample = Math.max(
+      -1,
+      Math.min(
+        1,
+        audioData[index]
+      )
+    );
 
     const integerSample =
       sample < 0
         ? sample * 0x8000
         : sample * 0x7fff;
 
-    view.setInt16(offset, integerSample, true);
+    view.setInt16(
+      offset,
+      integerSample,
+      true
+    );
 
     offset += bytesPerSample;
   }
@@ -399,20 +546,37 @@ function encodeWav(audioData, sampleRate = 16000) {
 }
 
 function updateVoiceMeter(audioData) {
-  if (!voiceLevel || audioData.length === 0) {
+  if (
+    !voiceLevel ||
+    audioData.length === 0
+  ) {
     return;
   }
 
   let total = 0;
 
-  for (let index = 0; index < audioData.length; index += 1) {
-    total += audioData[index] * audioData[index];
+  for (
+    let index = 0;
+    index < audioData.length;
+    index += 1
+  ) {
+    total +=
+      audioData[index] *
+      audioData[index];
   }
 
-  const rms = Math.sqrt(total / audioData.length);
-  const levelPercentage = Math.min(100, Math.round(rms * 350));
+  const rms = Math.sqrt(
+    total / audioData.length
+  );
 
-  voiceLevel.style.width = `${levelPercentage}%`;
+  const levelPercentage =
+    Math.min(
+      100,
+      Math.round(rms * 350)
+    );
+
+  voiceLevel.style.width =
+    `${levelPercentage}%`;
 }
 
 async function startRecording() {
@@ -421,48 +585,82 @@ async function startRecording() {
   }
 
   try {
-    microphoneStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        channelCount: 1,
-        echoCancellation: true,
-        noiseSuppression: true,
-        autoGainControl: true
-      }
-    });
+    microphoneStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+          audio: {
+            channelCount: 1,
+            echoCancellation: true,
+            noiseSuppression: true,
+            autoGainControl: true
+          }
+        });
 
-    audioContext = new AudioContext();
+    audioContext =
+      new AudioContext();
 
     microphoneSource =
-      audioContext.createMediaStreamSource(microphoneStream);
+      audioContext
+        .createMediaStreamSource(
+          microphoneStream
+        );
 
-    audioProcessor = audioContext.createScriptProcessor(
-      4096,
-      1,
-      1
-    );
+    audioProcessor =
+      audioContext
+        .createScriptProcessor(
+          4096,
+          1,
+          1
+        );
 
     recordedAudioChunks = [];
 
-    audioProcessor.onaudioprocess = (event) => {
-      const audioData = event.inputBuffer.getChannelData(0);
+    audioProcessor.onaudioprocess =
+      (event) => {
+        const audioData =
+          event.inputBuffer
+            .getChannelData(0);
 
-      recordedAudioChunks.push(new Float32Array(audioData));
+        recordedAudioChunks.push(
+          new Float32Array(
+            audioData
+          )
+        );
 
-      updateVoiceMeter(audioData);
-    };
+        updateVoiceMeter(
+          audioData
+        );
+      };
 
-    microphoneSource.connect(audioProcessor);
-    audioProcessor.connect(audioContext.destination);
+    microphoneSource.connect(
+      audioProcessor
+    );
+
+    audioProcessor.connect(
+      audioContext.destination
+    );
 
     isRecording = true;
 
-    setVoiceState("listening", "Listening...");
+    setVoiceState(
+      "listening",
+      "Listening..."
+    );
 
-    addLogEntry("Microphone recording started.", "voice");
+    addLogEntry(
+      "Microphone recording started.",
+      "voice"
+    );
   } catch (error) {
-    console.error("Microphone error:", error);
+    console.error(
+      "Microphone error:",
+      error
+    );
 
-    setVoiceState("error", "Microphone permission denied");
+    setVoiceState(
+      "error",
+      "Microphone permission denied"
+    );
 
     addLogEntry(
       "Kelvor could not access the microphone.",
@@ -478,11 +676,16 @@ async function stopRecording() {
 
   isRecording = false;
 
-  setVoiceState("processing", "Processing speech...");
+  setVoiceState(
+    "processing",
+    "Processing speech..."
+  );
 
   if (audioProcessor) {
     audioProcessor.disconnect();
-    audioProcessor.onaudioprocess = null;
+
+    audioProcessor.onaudioprocess =
+      null;
   }
 
   if (microphoneSource) {
@@ -490,46 +693,73 @@ async function stopRecording() {
   }
 
   if (microphoneStream) {
-    microphoneStream.getTracks().forEach((track) => {
-      track.stop();
-    });
+    microphoneStream
+      .getTracks()
+      .forEach((track) => {
+        track.stop();
+      });
   }
 
-  const originalSampleRate = audioContext?.sampleRate || 48000;
+  const originalSampleRate =
+    audioContext?.sampleRate ||
+    48000;
 
   if (audioContext) {
     await audioContext.close();
   }
 
   if (voiceLevel) {
-    voiceLevel.style.width = "0%";
+    voiceLevel.style.width =
+      "0%";
   }
 
-  const mergedAudio = mergeAudioChunks(recordedAudioChunks);
+  const mergedAudio =
+    mergeAudioChunks(
+      recordedAudioChunks
+    );
 
   if (mergedAudio.length === 0) {
-    setVoiceState("error", "No audio recorded");
+    setVoiceState(
+      "error",
+      "No audio recorded"
+    );
+
     return;
   }
 
-  const resampledAudio = resampleAudio(
-    mergedAudio,
-    originalSampleRate,
-    16000
+  const resampledAudio =
+    resampleAudio(
+      mergedAudio,
+      originalSampleRate,
+      16000
+    );
+
+  const wavBytes =
+    encodeWav(
+      resampledAudio,
+      16000
+    );
+
+  console.log(
+    "Kelvor WAV generated:",
+    {
+      bytes: wavBytes.length,
+      sampleRate: 16000
+    }
   );
 
-  const wavBytes = encodeWav(resampledAudio, 16000);
-
-  console.log("Kelvor WAV generated:", {
-    bytes: wavBytes.length,
-    sampleRate: 16000
-  });
-
-  await transcribeRecording(wavBytes);
+  await transcribeRecording(
+    wavBytes
+  );
 }
 
-async function transcribeRecording(wavBytes) {
-  if (!window.kelvor?.transcribeAudio) {
+async function transcribeRecording(
+  wavBytes
+) {
+  if (
+    !window.kelvor
+      ?.transcribeAudio
+  ) {
     setVoiceState(
       "error",
       "Voice transcription bridge unavailable"
@@ -545,21 +775,33 @@ async function transcribeRecording(wavBytes) {
 
   try {
     const transcriptionResult =
-      await window.kelvor.transcribeAudio(wavBytes);
+      await window.kelvor
+        .transcribeAudio(
+          wavBytes
+        );
 
     const transcription =
-      typeof transcriptionResult === "string"
+      typeof transcriptionResult ===
+      "string"
         ? transcriptionResult
         : transcriptionResult?.text ||
-          transcriptionResult?.transcription ||
+          transcriptionResult
+            ?.transcription ||
           "";
 
-    const cleanedText = transcription.trim();
+    const cleanedText =
+      transcription.trim();
 
-    console.log("Kelvor transcription:", cleanedText);
+    console.log(
+      "Kelvor transcription:",
+      cleanedText
+    );
 
     if (!cleanedText) {
-      setVoiceState("error", "Kelvor did not detect speech");
+      setVoiceState(
+        "error",
+        "Kelvor did not detect speech"
+      );
 
       addLogEntry(
         "No speech was detected. Please try again.",
@@ -569,57 +811,102 @@ async function transcribeRecording(wavBytes) {
       return;
     }
 
-    setVoiceState("success", `Heard: ${cleanedText}`);
-
-    addLogEntry(`Heard: ${cleanedText}`, "voice");
-
-    await processRecognizedVoice(cleanedText);
-  } catch (error) {
-    console.error("Transcription error:", error);
-
-    setVoiceState("error", "Speech processing failed");
+    setVoiceState(
+      "success",
+      `Heard: ${cleanedText}`
+    );
 
     addLogEntry(
-      error?.message || "Kelvor could not process the recording.",
+      `Heard: ${cleanedText}`,
+      "voice"
+    );
+
+    await processRecognizedVoice(
+      cleanedText
+    );
+  } catch (error) {
+    console.error(
+      "Transcription error:",
+      error
+    );
+
+    setVoiceState(
+      "error",
+      "Speech processing failed"
+    );
+
+    addLogEntry(
+      error?.message ||
+        "Kelvor could not process the recording.",
       "error"
     );
   }
 }
 
-async function processRecognizedVoice(text) {
+async function processRecognizedVoice(
+  text
+) {
   try {
-    if (window.kelvor?.processVoiceCommand) {
+    if (
+      window.kelvor
+        ?.processVoiceCommand
+    ) {
       const result =
-        await window.kelvor.processVoiceCommand(text);
+        await window.kelvor
+          .processVoiceCommand(
+            text
+          );
 
-      const resultMessage = getResultMessage(
-        result,
-        `Voice command completed: ${text}`
-      );
+      const resultMessage =
+        getResultMessage(
+          result,
+          `Voice command completed: ${text}`
+        );
 
       executedCommandCount += 1;
       updateCommandCount();
 
-      setVoiceState("success", resultMessage);
+      setVoiceState(
+        "success",
+        resultMessage
+      );
 
-      addLogEntry(resultMessage, "success");
+      addLogEntry(
+        resultMessage,
+        "success"
+      );
 
-      speak("Command completed.");
+      speak(
+        "Command completed."
+      );
+
       return;
     }
 
-    await executeCommand(text, "voice");
+    await executeCommand(
+      text,
+      "voice"
+    );
   } catch (error) {
-    console.error("Voice command error:", error);
+    console.error(
+      "Voice command error:",
+      error
+    );
 
-    setVoiceState("error", "Voice command failed");
+    setVoiceState(
+      "error",
+      "Voice command failed"
+    );
 
     addLogEntry(
-      error?.message || "Kelvor could not execute the voice command.",
+      error?.message ||
+        "Kelvor could not execute the voice command.",
       "error"
     );
 
-    speak("I could not complete that command.");
+    speak(
+      "I could not complete that command."
+    );
   }
 }
 
@@ -628,31 +915,45 @@ async function processRecognizedVoice(text) {
 // ============================================================
 
 if (talkButton) {
-  talkButton.addEventListener("pointerdown", async (event) => {
-    event.preventDefault();
+  talkButton.addEventListener(
+    "pointerdown",
+    async (event) => {
+      event.preventDefault();
 
-    talkButton.setPointerCapture?.(event.pointerId);
+      talkButton
+        .setPointerCapture?.(
+          event.pointerId
+        );
 
-    await startRecording();
-  });
+      await startRecording();
+    }
+  );
 
-  talkButton.addEventListener("pointerup", async (event) => {
-    event.preventDefault();
+  talkButton.addEventListener(
+    "pointerup",
+    async (event) => {
+      event.preventDefault();
 
-    await stopRecording();
-  });
+      await stopRecording();
+    }
+  );
 
-  talkButton.addEventListener("pointercancel", async () => {
-    await stopRecording();
-  });
+  talkButton.addEventListener(
+    "pointercancel",
+    async () => {
+      await stopRecording();
+    }
+  );
 
-  talkButton.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
+  talkButton.addEventListener(
+    "contextmenu",
+    (event) => {
+      event.preventDefault();
+    }
+  );
 }
-
 // ============================================================
-// LIVE SYSTEM INFORMATION
+// SYSTEM FORMATTING
 // ============================================================
 
 function formatPlatform(platform) {
@@ -662,13 +963,25 @@ function formatPlatform(platform) {
     linux: "Linux"
   };
 
-  return platformNames[platform] || platform;
+  return platformNames[platform] || platform || "Unknown";
 }
 
 function formatUptime(minutes) {
-  const days = Math.floor(minutes / 1440);
-  const hours = Math.floor((minutes % 1440) / 60);
-  const remainingMinutes = minutes % 60;
+  const safeMinutes =
+    Number.isFinite(minutes)
+      ? Math.max(0, Math.floor(minutes))
+      : 0;
+
+  const days = Math.floor(
+    safeMinutes / 1440
+  );
+
+  const hours = Math.floor(
+    (safeMinutes % 1440) / 60
+  );
+
+  const remainingMinutes =
+    safeMinutes % 60;
 
   if (days > 0) {
     return `${days}d ${hours}h ${remainingMinutes}m`;
@@ -681,58 +994,81 @@ function formatUptime(minutes) {
   return `${remainingMinutes}m`;
 }
 
+function clampPercentage(value) {
+  const numericValue =
+    Number(value);
+
+  if (!Number.isFinite(numericValue)) {
+    return 0;
+  }
+
+  return Math.min(
+    100,
+    Math.max(
+      0,
+      Math.round(numericValue)
+    )
+  );
+}
+
+function getMemoryUsed(
+  totalMemory,
+  freeMemory
+) {
+  const total =
+    Number(totalMemory) || 0;
+
+  const free =
+    Number(freeMemory) || 0;
+
+  return Math.max(
+    0,
+    total - free
+  );
+}
+
+// ============================================================
+// STATIC SYSTEM INFORMATION
+// ============================================================
+
 function loadSystemInformation() {
-  if (!window.kelvor?.getSystemInfo) {
-    console.warn("Kelvor system information bridge is unavailable.");
+  if (
+    !window.kelvor
+      ?.getSystemInfo
+  ) {
+    console.warn(
+      "Kelvor system information bridge is unavailable."
+    );
+
     return;
   }
 
   try {
-    const systemInfo = window.kelvor.getSystemInfo();
+    const systemInfo =
+      window.kelvor
+        .getSystemInfo();
 
     const platformName =
-      document.getElementById("platform-name");
+      document.getElementById(
+        "platform-name"
+      );
 
-    const computerName =
-      document.getElementById("computer-name");
-
-    const memoryTotal =
-      document.getElementById("memory-total");
-
-    const cpuName =
-      document.getElementById("cpu-name");
-
-    const systemUptime =
-      document.getElementById("system-uptime");
-
-    const runtimeVersion =
-      document.getElementById("runtime-version");
+    const deviceName =
+      document.getElementById(
+        "device-name"
+      );
 
     if (platformName) {
       platformName.textContent =
-        formatPlatform(systemInfo.platform);
+        formatPlatform(
+          systemInfo.platform
+        );
     }
 
-    if (computerName) {
-      computerName.textContent = systemInfo.hostname;
-    }
-
-    if (memoryTotal) {
-      memoryTotal.textContent = `${systemInfo.memory} GB`;
-    }
-
-    if (cpuName) {
-      cpuName.textContent = systemInfo.cpu;
-    }
-
-    if (systemUptime) {
-      systemUptime.textContent =
-        formatUptime(systemInfo.uptime);
-    }
-
-    if (runtimeVersion) {
-      runtimeVersion.textContent =
-        `Node ${systemInfo.node} • Electron ${systemInfo.electron}`;
+    if (deviceName) {
+      deviceName.textContent =
+        systemInfo.hostname ||
+        "Unknown device";
     }
 
     console.log(
@@ -751,79 +1087,493 @@ function loadSystemInformation() {
     );
 
     addLogEntry(
-      "Unable to retrieve live system information.",
+      "Unable to retrieve system information.",
       "error"
     );
   }
 }
 
 // ============================================================
+// LIVE SYSTEM MONITOR
+// ============================================================
+
+const liveSystemStatus =
+  document.getElementById(
+    "live-system-status"
+  );
+
+const cpuValue =
+  document.getElementById(
+    "cpu-value"
+  );
+
+const cpuProgress =
+  document.getElementById(
+    "cpu-progress"
+  );
+
+const memoryValue =
+  document.getElementById(
+    "memory-value"
+  );
+
+const memoryProgress =
+  document.getElementById(
+    "memory-progress"
+  );
+
+const memoryDetails =
+  document.getElementById(
+    "memory-details"
+  );
+
+const uptimeValue =
+  document.getElementById(
+    "uptime-value"
+  );
+
+const hostnameValue =
+  document.getElementById(
+    "hostname-value"
+  );
+
+const livePlatformValue =
+  document.getElementById(
+    "live-platform-value"
+  );
+
+let liveSystemInterval = null;
+let liveSystemErrorLogged = false;
+
+function updateProgressState(
+  element,
+  percentage
+) {
+  if (!element) {
+    return;
+  }
+
+  element.classList.remove(
+    "warning",
+    "danger"
+  );
+
+  if (percentage >= 90) {
+    element.classList.add(
+      "danger"
+    );
+
+    return;
+  }
+
+  if (percentage >= 75) {
+    element.classList.add(
+      "warning"
+    );
+  }
+}
+
+function updateProgressBar(
+  element,
+  percentage
+) {
+  if (!element) {
+    return;
+  }
+
+  const safePercentage =
+    clampPercentage(
+      percentage
+    );
+
+  element.style.width =
+    `${safePercentage}%`;
+
+  updateProgressState(
+    element,
+    safePercentage
+  );
+}
+
+function setLiveSystemStatus(
+  text,
+  state = "good"
+) {
+  if (!liveSystemStatus) {
+    return;
+  }
+
+  liveSystemStatus.textContent =
+    text;
+
+  liveSystemStatus.classList.remove(
+    "good",
+    "error"
+  );
+
+  if (state) {
+    liveSystemStatus
+      .classList.add(state);
+  }
+}
+
+async function refreshLiveSystem() {
+  if (
+    !window.kelvor
+      ?.getLiveSystem
+  ) {
+    setLiveSystemStatus(
+      "Unavailable",
+      "error"
+    );
+
+    if (!liveSystemErrorLogged) {
+      addLogEntry(
+        "Live system monitor bridge is unavailable.",
+        "error"
+      );
+
+      liveSystemErrorLogged = true;
+    }
+
+    return;
+  }
+
+  try {
+    const systemInfo =
+      await window.kelvor
+        .getLiveSystem();
+
+    const cpuUsage =
+      clampPercentage(
+        systemInfo?.cpu
+      );
+
+    const memoryUsage =
+      clampPercentage(
+        systemInfo
+          ?.memory
+          ?.usedPercent
+      );
+
+    const totalMemory =
+      Number(
+        systemInfo
+          ?.memory
+          ?.total
+      ) || 0;
+
+    const freeMemory =
+      Number(
+        systemInfo
+          ?.memory
+          ?.free
+      ) || 0;
+
+    const usedMemory =
+      getMemoryUsed(
+        totalMemory,
+        freeMemory
+      );
+
+    if (cpuValue) {
+      cpuValue.textContent =
+        `${cpuUsage}%`;
+    }
+
+    if (memoryValue) {
+      memoryValue.textContent =
+        `${memoryUsage}%`;
+    }
+
+    updateProgressBar(
+      cpuProgress,
+      cpuUsage
+    );
+
+    updateProgressBar(
+      memoryProgress,
+      memoryUsage
+    );
+
+    if (memoryDetails) {
+      memoryDetails.textContent =
+        `${usedMemory} GB used • ${freeMemory} GB free • ${totalMemory} GB total`;
+    }
+
+    if (uptimeValue) {
+      uptimeValue.textContent =
+        formatUptime(
+          systemInfo?.uptime
+        );
+    }
+
+    if (hostnameValue) {
+      hostnameValue.textContent =
+        systemInfo?.hostname ||
+        "Unknown device";
+    }
+
+    if (livePlatformValue) {
+      livePlatformValue.textContent =
+        `${formatPlatform(systemInfo?.platform)} • Live system data`;
+    }
+
+    setLiveSystemStatus(
+      "Live",
+      "good"
+    );
+
+    liveSystemErrorLogged = false;
+  } catch (error) {
+    console.error(
+      "Live system monitor error:",
+      error
+    );
+
+    setLiveSystemStatus(
+      "Connection error",
+      "error"
+    );
+
+    if (!liveSystemErrorLogged) {
+      addLogEntry(
+        error?.message ||
+          "Kelvor could not update live system information.",
+        "error"
+      );
+
+      liveSystemErrorLogged = true;
+    }
+  }
+}
+
+function startLiveSystemMonitor() {
+  if (liveSystemInterval) {
+    window.clearInterval(
+      liveSystemInterval
+    );
+  }
+
+  refreshLiveSystem();
+
+  liveSystemInterval =
+    window.setInterval(
+      refreshLiveSystem,
+      1000
+    );
+}
+
+// ============================================================
+// QUICK ACTIONS
+// ============================================================
+
+const quickActionButtons =
+  document.querySelectorAll(
+    ".quick-action-button"
+  );
+
+const quickActionStatus =
+  document.getElementById(
+    "quick-action-status"
+  );
+
+function formatActionName(
+  actionName
+) {
+  const actionNames = {
+    github: "GitHub Desktop",
+    vscode: "Visual Studio Code",
+    discord: "Discord",
+    slack: "Slack",
+    finder: "Finder"
+  };
+
+  return (
+    actionNames[actionName] ||
+    actionName
+  );
+}
+
+quickActionButtons.forEach(
+  (button) => {
+    button.addEventListener(
+      "click",
+      async () => {
+        const actionName =
+          button.dataset.action;
+
+        const displayName =
+          formatActionName(
+            actionName
+          );
+
+        const originalText =
+          quickActionStatus
+            ?.textContent ||
+          "Select an application for Kelvor to launch.";
+
+        button.disabled = true;
+
+        if (quickActionStatus) {
+          quickActionStatus
+            .classList.remove(
+              "success",
+              "error"
+            );
+
+          quickActionStatus.textContent =
+            `Kelvor is launching ${displayName}...`;
+        }
+
+        try {
+          if (
+            !window.kelvor
+              ?.quickAction
+          ) {
+            throw new Error(
+              "Quick Actions bridge is unavailable."
+            );
+          }
+
+          const result =
+            await window.kelvor
+              .quickAction(
+                actionName
+              );
+
+          if (!result?.ok) {
+            throw new Error(
+              result?.message ||
+              `${displayName} could not be launched.`
+            );
+          }
+
+          const successMessage =
+            result.message ||
+            `${displayName} launched successfully.`;
+
+          if (quickActionStatus) {
+            quickActionStatus
+              .classList.add(
+                "success"
+              );
+
+            quickActionStatus.textContent =
+              successMessage;
+          }
+
+          addLogEntry(
+            successMessage,
+            "success"
+          );
+        } catch (error) {
+          console.error(
+            "Quick Action error:",
+            error
+          );
+
+          const errorMessage =
+            error?.message ||
+            "Quick Action failed.";
+
+          if (quickActionStatus) {
+            quickActionStatus
+              .classList.add(
+                "error"
+              );
+
+            quickActionStatus.textContent =
+              errorMessage;
+          }
+
+          addLogEntry(
+            errorMessage,
+            "error"
+          );
+        } finally {
+          window.setTimeout(
+            () => {
+              button.disabled =
+                false;
+            },
+            500
+          );
+
+          window.setTimeout(
+            () => {
+              if (
+                !quickActionStatus
+              ) {
+                return;
+              }
+
+              quickActionStatus
+                .classList.remove(
+                  "success",
+                  "error"
+                );
+
+              quickActionStatus.textContent =
+                originalText;
+            },
+            3000
+          );
+        }
+      }
+    );
+  }
+);
+
+// ============================================================
+// CLEANUP
+// ============================================================
+
+window.addEventListener(
+  "beforeunload",
+  () => {
+    if (liveSystemInterval) {
+      window.clearInterval(
+        liveSystemInterval
+      );
+    }
+
+    if (microphoneStream) {
+      microphoneStream
+        .getTracks()
+        .forEach((track) => {
+          track.stop();
+        });
+    }
+
+    if (
+      audioContext &&
+      audioContext.state !==
+        "closed"
+    ) {
+      audioContext.close();
+    }
+  }
+);
+
+// ============================================================
 // INITIALIZATION
 // ============================================================
 
-window.addEventListener("DOMContentLoaded", () => {
-  updateCommandCount();
-  loadSystemInformation();
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+    updateCommandCount();
+    loadSystemInformation();
+    startLiveSystemMonitor();
 
-  console.log("KelvorOS dashboard initialized.");
-});
-const quickActionButtons = document.querySelectorAll(
-  ".quick-action-button"
+    console.log(
+      "KelvorOS v3.4 dashboard initialized."
+    );
+
+    addLogEntry(
+      "KelvorOS v3.4 live system monitor initialized.",
+      "success"
+    );
+  }
 );
-
-const quickActionStatus = document.getElementById(
-  "quick-action-status"
-);
-
-quickActionButtons.forEach((button) => {
-  button.addEventListener("click", async () => {
-    const actionName = button.dataset.action;
-    const originalText = quickActionStatus.textContent;
-
-    button.disabled = true;
-
-    quickActionStatus.classList.remove("success", "error");
-    quickActionStatus.textContent =
-      `Kelvor is launching ${actionName}...`;
-
-    try {
-      if (!window.kelvor?.quickAction) {
-        throw new Error("Quick Actions bridge is unavailable.");
-      }
-
-      const result = await window.kelvor.quickAction(actionName);
-
-      if (!result?.ok) {
-        throw new Error(
-          result?.message || "The application could not be launched."
-        );
-      }
-
-      quickActionStatus.classList.add("success");
-      quickActionStatus.textContent =
-        result.message || `${actionName} launched successfully.`;
-
-      
-    } catch (error) {
-      console.error("Quick Action error:", error);
-
-      quickActionStatus.classList.add("error");
-      quickActionStatus.textContent =
-        error.message || "Quick Action failed.";
-    } finally {
-      window.setTimeout(() => {
-        button.disabled = false;
-
-        if (
-          quickActionStatus.textContent.includes("successfully") ||
-          quickActionStatus.classList.contains("error")
-        ) {
-          window.setTimeout(() => {
-            quickActionStatus.classList.remove("success", "error");
-            quickActionStatus.textContent = originalText;
-          }, 2500);
-        }
-      }, 500);
-    }
-  });
-});

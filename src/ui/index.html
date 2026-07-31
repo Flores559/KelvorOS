@@ -10,10 +10,10 @@
 
   <meta
     http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self'; script-src 'self';"
+    content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:;"
   />
 
-  <title>KelvorOS v3.3</title>
+  <title>KelvorOS v3.4</title>
 
   <link rel="stylesheet" href="./styles.css" />
 </head>
@@ -32,24 +32,40 @@
 
         <div>
           <h1>KelvorOS</h1>
-          <p>Version 3.3</p>
+          <p>Version 3.4</p>
         </div>
       </div>
 
       <nav class="navigation">
-        <button class="nav-button active" data-view="dashboard">
+        <button
+          class="nav-button active"
+          data-view="dashboard"
+          type="button"
+        >
           Dashboard
         </button>
 
-        <button class="nav-button" data-view="voice">
+        <button
+          class="nav-button"
+          data-view="voice"
+          type="button"
+        >
           Voice Provider
         </button>
 
-        <button class="nav-button" data-view="commands">
+        <button
+          class="nav-button"
+          data-view="commands"
+          type="button"
+        >
           Commands
         </button>
 
-        <button class="nav-button" data-view="activity">
+        <button
+          class="nav-button"
+          data-view="activity"
+          type="button"
+        >
           Activity
         </button>
       </nav>
@@ -70,7 +86,7 @@
         </div>
 
         <div class="version-badge">
-          v3.3
+          v3.4
         </div>
       </header>
 
@@ -83,7 +99,7 @@
             <h3>Kelvor is online and ready.</h3>
 
             <p class="hero-copy">
-              Voice services, command processing, system information,
+              Voice services, command processing, live system monitoring,
               and dashboard controls are available.
             </p>
           </div>
@@ -117,6 +133,7 @@
           <article class="status-card">
             <p class="card-label">Platform</p>
             <h3 id="platform-name">Loading...</h3>
+
             <span id="device-name" class="card-status">
               Detecting device
             </span>
@@ -124,17 +141,121 @@
 
         </div>
 
+        <!-- KelvorOS v3.4 Live System Monitor -->
+
+        <section class="command-panel live-system-panel">
+
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Performance Center</p>
+              <h3>Live System Monitor</h3>
+            </div>
+
+            <span
+              id="live-system-status"
+              class="card-status good"
+            >
+              Updating
+            </span>
+          </div>
+
+          <div class="system-monitor-grid">
+
+            <article class="system-monitor-card">
+
+              <div class="system-monitor-heading">
+                <span>CPU Usage</span>
+                <strong id="cpu-value">0%</strong>
+              </div>
+
+              <div class="system-progress-track">
+                <div
+                  id="cpu-progress"
+                  class="system-progress-fill"
+                  style="width: 0%;"
+                ></div>
+              </div>
+
+              <p class="system-monitor-detail">
+                Current processor workload.
+              </p>
+
+            </article>
+
+            <article class="system-monitor-card">
+
+              <div class="system-monitor-heading">
+                <span>Memory Usage</span>
+                <strong id="memory-value">0%</strong>
+              </div>
+
+              <div class="system-progress-track">
+                <div
+                  id="memory-progress"
+                  class="system-progress-fill"
+                  style="width: 0%;"
+                ></div>
+              </div>
+
+              <p
+                id="memory-details"
+                class="system-monitor-detail"
+              >
+                Loading memory information...
+              </p>
+
+            </article>
+
+            <article class="system-monitor-card">
+
+              <div class="system-monitor-heading">
+                <span>System Uptime</span>
+                <strong id="uptime-value">0m</strong>
+              </div>
+
+              <p class="system-monitor-detail">
+                Time since your device was last restarted.
+              </p>
+
+            </article>
+
+            <article class="system-monitor-card">
+
+              <div class="system-monitor-heading">
+                <span>Device Name</span>
+                <strong id="hostname-value">Loading...</strong>
+              </div>
+
+              <p
+                id="live-platform-value"
+                class="system-monitor-detail"
+              >
+                Detecting platform...
+              </p>
+
+            </article>
+
+          </div>
+
+        </section>
+
+        <!-- Quick Command -->
+
         <section class="command-panel">
+
           <div class="panel-heading">
             <div>
               <p class="eyebrow">Quick Command</p>
               <h3>What should Kelvor do?</h3>
             </div>
 
-            <span id="command-status">Standing by</span>
+            <span id="command-status">
+              Standing by
+            </span>
           </div>
 
           <form id="command-form">
+
             <input
               id="command-input"
               type="text"
@@ -145,10 +266,12 @@
             <button type="submit">
               Execute
             </button>
+
           </form>
+
         </section>
 
-        <!-- Kelvor v3.3 Quick Actions -->
+        <!-- Quick Actions -->
 
         <section class="command-panel quick-actions-card">
 
@@ -158,87 +281,89 @@
               <h3>Quick Actions</h3>
             </div>
 
-            <span class="card-status good">Online</span>
+            <span class="card-status good">
+              Online
+            </span>
           </div>
 
           <div class="quick-actions-grid">
 
-  <button
-    type="button"
-    class="quick-action-button"
-    data-action="github"
-  >
-    <span class="quick-action-icon">
-      <img
-        src="../../assets/icons/github.webp"
-        alt="GitHub Desktop"
-      />
-    </span>
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="github"
+            >
+              <span class="quick-action-icon">
+                <img
+                  src="../../assets/icons/github.webp"
+                  alt="GitHub Desktop"
+                />
+              </span>
 
-    <span>GitHub Desktop</span>
-  </button>
+              <span>GitHub Desktop</span>
+            </button>
 
-  <button
-    type="button"
-    class="quick-action-button"
-    data-action="vscode"
-  >
-    <span class="quick-action-icon">
-      <img
-        src="../../assets/icons/vscode.png"
-        alt="Visual Studio Code"
-      />
-    </span>
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="vscode"
+            >
+              <span class="quick-action-icon">
+                <img
+                  src="../../assets/icons/vscode.png"
+                  alt="Visual Studio Code"
+                />
+              </span>
 
-    <span>Visual Studio Code</span>
-  </button>
+              <span>Visual Studio Code</span>
+            </button>
 
-  <button
-    type="button"
-    class="quick-action-button"
-    data-action="discord"
-  >
-    <span class="quick-action-icon">
-      <img
-        src="../../assets/icons/discord.webp"
-        alt="Discord"
-      />
-    </span>
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="discord"
+            >
+              <span class="quick-action-icon">
+                <img
+                  src="../../assets/icons/discord.webp"
+                  alt="Discord"
+                />
+              </span>
 
-    <span>Discord</span>
-  </button>
+              <span>Discord</span>
+            </button>
 
-  <button
-    type="button"
-    class="quick-action-button"
-    data-action="slack"
-  >
-    <span class="quick-action-icon">
-      <img
-        src="../../assets/icons/slack.webp"
-        alt="Slack"
-      />
-    </span>
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="slack"
+            >
+              <span class="quick-action-icon">
+                <img
+                  src="../../assets/icons/slack.webp"
+                  alt="Slack"
+                />
+              </span>
 
-    <span>Slack</span>
-  </button>
+              <span>Slack</span>
+            </button>
 
-  <button
-    type="button"
-    class="quick-action-button"
-    data-action="finder"
-  >
-    <span class="quick-action-icon">
-      <img
-        src="../../assets/icons/finder.png"
-        alt="Finder"
-      />
-    </span>
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="finder"
+            >
+              <span class="quick-action-icon">
+                <img
+                  src="../../assets/icons/finder.png"
+                  alt="Finder"
+                />
+              </span>
 
-    <span>Finder</span>
-  </button>
+              <span>Finder</span>
+            </button>
 
-</div>
+          </div>
 
           <p
             id="quick-action-status"
@@ -248,6 +373,8 @@
           </p>
 
         </section>
+
+        <!-- Recent Activity -->
 
         <section class="activity-panel">
 
@@ -270,17 +397,21 @@
 
             <div class="log-entry">
               <span class="log-time">System</span>
-              <p>KelvorOS v3.3 initialized successfully.</p>
+              <p>KelvorOS v3.4 initialized successfully.</p>
             </div>
 
           </div>
+
         </section>
 
       </section>
 
+      <!-- Voice Provider View -->
+
       <section class="view" id="voice-view">
 
         <div class="voice-panel">
+
           <p class="eyebrow">Kelvor Voice Core</p>
           <h3>Push to Talk</h3>
 
@@ -296,20 +427,29 @@
             Microphone standby
           </p>
 
-          <button id="talk-button" type="button">
+          <button
+            id="talk-button"
+            type="button"
+          >
             Hold to Talk
           </button>
 
-          <button id="test-voice-button" type="button">
+          <button
+            id="test-voice-button"
+            type="button"
+          >
             Test Kelvor Voice
           </button>
 
           <div class="voice-meter">
             <div id="voice-level"></div>
           </div>
+
         </div>
 
       </section>
+
+      <!-- Commands View -->
 
       <section class="view" id="commands-view">
 
@@ -322,6 +462,8 @@
         </div>
 
       </section>
+
+      <!-- Activity View -->
 
       <section class="view" id="activity-view">
 
