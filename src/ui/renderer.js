@@ -767,3 +767,63 @@ window.addEventListener("DOMContentLoaded", () => {
 
   console.log("KelvorOS dashboard initialized.");
 });
+const quickActionButtons = document.querySelectorAll(
+  ".quick-action-button"
+);
+
+const quickActionStatus = document.getElementById(
+  "quick-action-status"
+);
+
+quickActionButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    const actionName = button.dataset.action;
+    const originalText = quickActionStatus.textContent;
+
+    button.disabled = true;
+
+    quickActionStatus.classList.remove("success", "error");
+    quickActionStatus.textContent =
+      `Kelvor is launching ${actionName}...`;
+
+    try {
+      if (!window.kelvor?.quickAction) {
+        throw new Error("Quick Actions bridge is unavailable.");
+      }
+
+      const result = await window.kelvor.quickAction(actionName);
+
+      if (!result?.ok) {
+        throw new Error(
+          result?.message || "The application could not be launched."
+        );
+      }
+
+      quickActionStatus.classList.add("success");
+      quickActionStatus.textContent =
+        result.message || `${actionName} launched successfully.`;
+
+      
+    } catch (error) {
+      console.error("Quick Action error:", error);
+
+      quickActionStatus.classList.add("error");
+      quickActionStatus.textContent =
+        error.message || "Quick Action failed.";
+    } finally {
+      window.setTimeout(() => {
+        button.disabled = false;
+
+        if (
+          quickActionStatus.textContent.includes("successfully") ||
+          quickActionStatus.classList.contains("error")
+        ) {
+          window.setTimeout(() => {
+            quickActionStatus.classList.remove("success", "error");
+            quickActionStatus.textContent = originalText;
+          }, 2500);
+        }
+      }, 500);
+    }
+  });
+});
