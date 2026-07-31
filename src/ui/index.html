@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
@@ -12,7 +13,8 @@
     content="default-src 'self'; style-src 'self'; script-src 'self';"
   />
 
-  <title>KelvorOS v3.1</title>
+  <title>KelvorOS v3.3</title>
+
   <link rel="stylesheet" href="./styles.css" />
 </head>
 
@@ -20,18 +22,19 @@
   <div class="app-shell">
 
     <aside class="sidebar">
-     <div class="brand">
-  <img
-    class="brand-logo"
-    src="../../assets/kelvor-logo.png"
-    alt="Kelvor logo"
-  />
 
-  <div>
-    <h1>KelvorOS</h1>
-    <p>Version 3.1</p>
-  </div>
-</div>
+      <div class="brand">
+        <img
+          class="brand-logo"
+          src="../../assets/kelvor-logo.png"
+          alt="Kelvor logo"
+        />
+
+        <div>
+          <h1>KelvorOS</h1>
+          <p>Version 3.3</p>
+        </div>
+      </div>
 
       <nav class="navigation">
         <button class="nav-button active" data-view="dashboard">
@@ -49,13 +52,13 @@
         <button class="nav-button" data-view="activity">
           Activity
         </button>
-        <button id="testVoiceBtn">Test Kelvor Voice</button>
       </nav>
 
       <div class="sidebar-footer">
         <span class="status-dot"></span>
         <span>System Online</span>
       </div>
+
     </aside>
 
     <main class="main-content">
@@ -67,7 +70,7 @@
         </div>
 
         <div class="version-badge">
-          v3.1
+          v3.3
         </div>
       </header>
 
@@ -76,14 +79,19 @@
         <div class="hero-panel">
           <div>
             <p class="eyebrow">Current Status</p>
+
             <h3>Kelvor is online and ready.</h3>
+
             <p class="hero-copy">
-              Voice services, command processing, and dashboard controls
-              are available.
+              Voice services, command processing, system information,
+              and dashboard controls are available.
             </p>
           </div>
 
-          <div class="pulse-orb" aria-label="Kelvor online indicator"></div>
+          <div
+            class="pulse-orb"
+            aria-label="Kelvor online indicator"
+          ></div>
         </div>
 
         <div class="card-grid">
@@ -108,8 +116,10 @@
 
           <article class="status-card">
             <p class="card-label">Platform</p>
-            <h3 id="platform-name">macOS</h3>
-            <span class="card-status">Intel MacBook Air</span>
+            <h3 id="platform-name">Loading...</h3>
+            <span id="device-name" class="card-status">
+              Detecting device
+            </span>
           </article>
 
         </div>
@@ -138,72 +148,161 @@
           </form>
         </section>
 
+        <!-- Kelvor v3.3 Quick Actions -->
+
+        <section class="command-panel quick-actions-card">
+
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Control Center</p>
+              <h3>Quick Actions</h3>
+            </div>
+
+            <span class="card-status good">Online</span>
+          </div>
+
+          <div class="quick-actions-grid">
+
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="github"
+            >
+              <span class="quick-action-icon">GH</span>
+              <span>GitHub Desktop</span>
+            </button>
+
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="vscode"
+            >
+              <span class="quick-action-icon">VS</span>
+              <span>Visual Studio Code</span>
+            </button>
+
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="discord"
+            >
+              <span class="quick-action-icon">DC</span>
+              <span>Discord</span>
+            </button>
+
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="slack"
+            >
+              <span class="quick-action-icon">SL</span>
+              <span>Slack</span>
+            </button>
+
+            <button
+              type="button"
+              class="quick-action-button"
+              data-action="finder"
+            >
+              <span class="quick-action-icon">FN</span>
+              <span>Finder</span>
+            </button>
+
+          </div>
+
+          <p
+            id="quick-action-status"
+            class="quick-action-status"
+          >
+            Select an application for Kelvor to launch.
+          </p>
+
+        </section>
+
         <section class="activity-panel">
+
           <div class="panel-heading">
             <div>
               <p class="eyebrow">Recent Activity</p>
               <h3>System Log</h3>
             </div>
 
-            <button id="clear-log" class="secondary-button">
+            <button
+              id="clear-log"
+              class="secondary-button"
+              type="button"
+            >
               Clear
             </button>
           </div>
 
           <div id="activity-log" class="activity-log">
+
             <div class="log-entry">
               <span class="log-time">System</span>
-              <p>KelvorOS v3.1 initialized successfully.</p>
+              <p>KelvorOS v3.3 initialized successfully.</p>
             </div>
+
           </div>
         </section>
 
       </section>
 
       <section class="view" id="voice-view">
-  <div class="voice-panel">
-    <p class="eyebrow">Kelvor Voice Core</p>
-    <h3>Push to Talk</h3>
 
-    <div
-      id="voice-orb"
-      class="voice-orb"
-      aria-label="Microphone status"
-    >
-      <span>🎙️</span>
-    </div>
+        <div class="voice-panel">
+          <p class="eyebrow">Kelvor Voice Core</p>
+          <h3>Push to Talk</h3>
 
-    <p id="voice-status">Microphone standby</p>
+          <div
+            id="voice-orb"
+            class="voice-orb"
+            aria-label="Microphone status"
+          >
+            <span>🎙️</span>
+          </div>
 
-    <button id="talk-button" type="button">
-      Hold to Talk
-    </button>
-    <button id="test-voice-button" type="button">
-  Test Kelvor Voice
-</button>
+          <p id="voice-status">
+            Microphone standby
+          </p>
 
-    <div class="voice-meter">
-      <div id="voice-level"></div>
-    </div>
-  </div>
-</section>
+          <button id="talk-button" type="button">
+            Hold to Talk
+          </button>
+
+          <button id="test-voice-button" type="button">
+            Test Kelvor Voice
+          </button>
+
+          <div class="voice-meter">
+            <div id="voice-level"></div>
+          </div>
+        </div>
+
+      </section>
 
       <section class="view" id="commands-view">
+
         <div class="empty-state">
           <h3>Command Library</h3>
+
           <p>
             Saved Kelvor commands will appear here.
           </p>
         </div>
+
       </section>
 
       <section class="view" id="activity-view">
+
         <div class="empty-state">
           <h3>Activity Center</h3>
+
           <p>
             Full system history and notifications will appear here.
           </p>
         </div>
+
       </section>
 
     </main>

@@ -2,7 +2,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 const { getSystemInfo } = require("./systemInfo");
 
 contextBridge.exposeInMainWorld("kelvor", {
-  version: "3.2.0",
+  version: "3.3.0",
   platform: process.platform,
 
   launchApp: (appName) =>
@@ -19,6 +19,9 @@ contextBridge.exposeInMainWorld("kelvor", {
 
   command: (text) =>
     ipcRenderer.invoke("kelvor-command", text),
+
+  quickAction: (actionName) =>
+    ipcRenderer.invoke("kelvor-quick-action", actionName),
 
   getSystemInfo: () =>
     getSystemInfo(),
