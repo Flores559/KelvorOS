@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
-const { getSystemInfo } = require("./core/systemInfo");
+const { getSystemInfo } = require("./systemInfo");
 
 contextBridge.exposeInMainWorld("kelvor", {
   version: "3.2.0",

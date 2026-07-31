@@ -31,14 +31,30 @@ async function configureMicrophoneAccess() {
 
 function createWindow() {
   vaultPath();
+
   mainWindow = new BrowserWindow({
-    width: 1600, height: 1000, minWidth: 1200, minHeight: 760,
-    backgroundColor: "#030303", title: "KelvorOS v3.1 Audio Engine",
-    webPreferences: { preload: path.join(__dirname, "src/core/preload.js"), nodeIntegration: false, contextIsolation: true },
+    width: 1600,
+    height: 1000,
+    minWidth: 1200,
+    minHeight: 760,
+    backgroundColor: "#030303",
+    title: "KelvorOS v3.2",
+
+    webPreferences: {
+      preload: path.join(__dirname, "src/core/preload.js"),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false
+    }
   });
+
   mainWindow.loadFile(path.join(__dirname, "src/ui/index.html"));
-  logEvent("KelvorOS Started", "v3.1 Audio Engine online.");
-  mainWindow.on("closed", () => { mainWindow = null; });
+
+  logEvent("KelvorOS Started", "v3.2 online.");
+
+  mainWindow.on("closed", () => {
+    mainWindow = null;
+  });
 }
 
 app.whenReady().then(async () => { await configureMicrophoneAccess(); createWindow(); app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); }); });
